@@ -70,7 +70,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="program">Program</label>
-                                                        <select class="form-select form-control" id="program"
+                                                        <select class="form-select form-control" id="program" required
                                                             name="program_id">
                                                             @forelse ($programs as $dept)
                                                                 <option value="{{ $dept->id }}"
@@ -149,14 +149,14 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="abstract">Abstract</label>
-                                                        <textarea class="form-control" id="abstract" name="abstract" rows="3" required></textarea>
+                                                        <textarea class="form-control" id="abstract" name="abstract" rows="5" required></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label for="authors">Authors</label>
-                                                        <textarea class="form-control" id="authors" name="authors" rows="4" required
+                                                        <textarea class="form-control" id="authors" name="authors" rows="5" required
                                                             placeholder="Fernando, Christian"></textarea>
                                                     </div>
                                                 </div>
