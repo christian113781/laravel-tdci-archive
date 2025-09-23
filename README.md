@@ -1,4 +1,6 @@
-Installation: Add ENV File from zip
+Installation: 
+
+copy the .env.example then rename to .env
 
 Run:
 composer install
