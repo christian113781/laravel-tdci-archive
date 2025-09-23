@@ -3,8 +3,11 @@ Installation:
 copy the .env.example then rename to .env
 
 Run:
+
 composer install
+
 php artisan storage:link
+
 add tdci database in mysql
 
 
