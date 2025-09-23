@@ -1,6 +1,8 @@
 Installation: Add ENV File from zip
 
-Run: php artisan storage:link
+Run:
+composer install
+php artisan storage:link
 
 
 
