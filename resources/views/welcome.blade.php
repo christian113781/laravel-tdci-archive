@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Tagum Doctors College</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('landing/images/favicon.png') }}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- Web Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="{{ asset('landing/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('landing/css/LineIcons.2.0.css') }}">
+    <link rel="stylesheet" href="{{ asset('landing/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('landing/css/tiny-slider.css') }}">
+    <link rel="stylesheet" href="{{ asset('landing/css/glightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('landing/css/main.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Start Header Area -->
+    <header class="header navbar-area">
+        <!-- Toolbar Start -->
+        <div class="toolbar-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6 col-12">
+
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="toolbar-login">
+                            <div class="button">
+                                <a href="{{ route('register') }}">Create an Account</a>
+                                <a href="{{ route('login') }}" class="btn">Log In</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Toolbar End -->
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <div class="nav-inner">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand" href="javascript:void(0)">
+                                <img src="{{ asset('landing/images/logo.png') }}" alt="Logo">
+                            </a>
+                            <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a class="page-scroll active dd-menu collapsed" href="javascript:void(0)"
+                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-1"
+                                            aria-controls="navbarSupportedContent" aria-expanded="false"
+                                            aria-label="Toggle navigation">Home</a>
+
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="page-scroll dd-menu collapsed" href="javascript:void(0)"
+                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-2"
+                                            aria-controls="navbarSupportedContent" aria-expanded="false"
+                                            aria-label="Toggle navigation">Courses</a>
+
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="page-scroll dd-menu collapsed" href="javascript:void(0)"
+                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-3"
+                                            aria-controls="navbarSupportedContent" aria-expanded="false"
+                                            aria-label="Toggle navigation">Events</a>
+
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="page-scroll dd-menu collapsed" href="javascript:void(0)"
+                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-4"
+                                            aria-controls="navbarSupportedContent" aria-expanded="false"
+                                            aria-label="Toggle navigation">Pages</a>
+
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="page-scroll dd-menu collapsed" href="javascript:void(0)"
+                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-5"
+                                            aria-controls="navbarSupportedContent" aria-expanded="false"
+                                            aria-label="Toggle navigation">Blog</a>
+
+                                    </li>
+                                    <li class="nav-item"><a href="javascript:void(0)">Contact</a></li>
+                                </ul>
+                                <form class="d-flex search-form">
+                                    <input class="form-control me-2" type="search" placeholder="Search"
+                                        aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit"><i
+                                            class="lni lni-search-alt"></i></button>
+                                </form>
+                            </div> <!-- navbar collapse -->
+                        </nav> <!-- navbar -->
+                    </div>
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </header>
+    <!-- End Header Area -->
+
+    <!-- Start Hero Area -->
+    <section class="hero-area">
+        <div class="hero-slider">
+            <!-- Single Slider -->
+            <div class="hero-inner overlay"
+                style="background-image: url('{{ asset('landing/images/slider-bg1.jpg') }}');">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
+                            <div class="home-slider">
+                                <div class="hero-text">
+                                    <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to Learning Today</h5>
+                                    <h1 class="wow fadeInUp" data-wow-delay=".5s">TDCI ARCHIVING SYSTEM <br>  Reliable & Efficient Medical
+                                        Archiving</h1>
+                                    <p class="wow fadeInUp" data-wow-delay=".7s">
+                                        Our PACS (Picture Archiving and Communication System) streamlines digital
+                                        storage<br>
+                                        and retrieval of medical images and reports with speed and security.<br>
+                                        No more film delays—just instant access for better patient care.
+                                    </p>
+                                    <div class="button wow fadeInUp" data-wow-delay=".9s">
+                                        <a href="javascript:void(0)" class="btn">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ End Single Slider -->
+            <!-- Single Slider -->
+            <div class="hero-inner overlay"
+                style="background-image: url('{{ asset('landing/images/slider-bg2.jpg') }}');">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
+                            <div class="home-slider">
+                                <div class="hero-text">
+                                    <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to learning Today</h5>
+                                    <h1 class="wow fadeInUp" data-wow-delay=".5s">Smart Medical <br> Imaging Archive
+                                    </h1>
+                                    <p class="wow fadeInUp" data-wow-delay=".7s">
+                                        Experience the power of PACS—fast, secure image archiving and retrieval,<br>
+                                        accessible anytime, anywhere, to keep healthcare moving forward.<br>
+                                        Leave film behind and embrace digital efficiency.
+                                    </p>
+                                    <div class="button wow fadeInUp" data-wow-delay=".9s">
+                                        <a href="javascript:void(0)" class="btn">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ End Single Slider -->
+            <!-- Single Slider -->
+            <div class="hero-inner overlay"
+                style="background-image: url('{{ asset('landing/images/slider-bg3.jpg') }}');">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
+                            <div class="home-slider">
+                                <div class="hero-text">
+                                    <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to learning Today</h5>
+                                    <h1 class="wow fadeInUp" data-wow-delay=".5s">Integrated PACS <br> for Seamless
+                                        Workflow</h1>
+                                    <p class="wow fadeInUp" data-wow-delay=".7s">
+                                        Our PACS integrates with EHR, RIS, and HIS to centralize medical images<br>
+                                        and streamline diagnostics and collaboration.<br>
+                                        Empower clinicians with secure, centralized access to imaging.
+                                    </p>
+                                    <div class="button wow fadeInUp" data-wow-delay=".9s">
+                                        <a href="javascript:void(0)" class="btn">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ End Single Slider -->
+        </div>
+    </section>
+    <!--/ End Hero Area -->
+
+    <!-- Start Features Area -->
+    <section class="features">
+        <div class="container-fluid">
+            <div class="single-head">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-12 padding-zero">
+                        <!-- Start Single Feature -->
+                        <div class="single-feature">
+                            <h3><a href="javascript:void(0)">Trending Courses</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, quaerat beatae
+                                nulla debitis vitae temporibus sed.</p>
+                            <div class="button">
+                                <a href="javascript:void(0)" class="btn">Explore <i
+                                        class="lni lni-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- End Single Feature -->
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 padding-zero">
+                        <!-- Start Single Feature -->
+                        <div class="single-feature">
+                            <h3><a href="javascript:void(0)">Certified Teachers</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, quaerat beatae
+                                nulla debitis vitae temporibus sed.</p>
+
+                            <div class="button">
+                                <a href="javascript:void(0)" class="btn">Explore <i
+                                        class="lni lni-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- End Single Feature -->
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 padding-zero">
+                        <!-- Start Single Feature -->
+                        <div class="single-feature last">
+                            <h3><a href="javascript:void(0)">Books & Library</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, quaerat beatae
+                                nulla debitis vitae temporibus sed.</p>
+
+                            <div class="button">
+                                <a href="javascript:void(0)" class="btn">Explore <i
+                                        class="lni lni-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- End Single Feature -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /End Features Area -->
+
+    <!-- Start About Us Area -->
+    <section class="about-us section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <div class="about-left">
+                        <div class="about-title align-left">
+
+                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to our campus</h2>
+                            <p class="wow fadeInUp" data-wow-delay=".6s">Throughout the history, TDCI Community has remained committed to creating an environment in which students are known, supported, challenged, and encouraged to grow. Without a doubt, TDCI will brace up headstrong to proving its lifelong duty, making sure all TDCIans will fly high!.</p>
+                            <p class="qote wow fadeInUp" data-wow-delay=".8s">Success after success came, great individuals had dedicated their leadership in keeping the institution’s mighty stand. One of the leaders is held as the majority stockholder in 2019, in what TDCIans remembered as fun-loving and a proud Muslim– Dr. Joel A. Padoran.
+
+In 2019 the school turns upside-down due to Covid 19 pandemic, however TDCI remains faithful to its commitment with the influence because of the leadership of the current president Manuel Dennis E. Molina, MBA. His interest, enthusiasm, understanding, realism and vision were vital forces to embracing the demand of new normal educational setting.</p>
+                            <div class="button wow fadeInUp" data-wow-delay="1s">
+                                <a href="javascript:void(0)" class="btn">Read More</a>
+                                <a href="https://www.youtube.com/watch?v=uZI5oye0U_w" class="glightbox video btn">
+                                    Play Video<i class="lni lni-play"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="about-right wow fadeInRight" data-wow-delay=".4s">
+                        <img src="{{ asset('landing/images/about-img2.png') }}" alt="#">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /End About Us Area -->
+
+
+
+    <!-- Start Testimonials Area -->
+    <section class="">
+
+
+        <div class="row testimonial-slider">
+        </div>
+
+    </section>
+    <!-- End Testimonial Area -->
+
+
+    <!-- Start Newsletter Area -->
+    <section class="newsletter-area section">
+        <div class="container">
+            <div class="row ">
+                <div class="col-lg-6 offset-lg-3 col-md-12 col-12">
+                    <div class="newsletter-title">
+                        <span>Sign Up for</span>
+                        <h2>The Newsletter</h2>
+                        <p>Subscribe to us to always stay in touch with us and get the latest news<br>
+                            about our company and all of our activities!</p>
+                    </div>
+                    <!-- Start Newsletter Form -->
+                    <div class="subscribe-text wow fadeInUp" data-wow-delay=".2s">
+                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                            <input name="EMAIL" placeholder="Your email address" class="common-input"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your email address'"
+                                required="" type="email">
+                            <div class="button">
+                                <button class="btn">Subscribe Now!</button>
+                            </div>
+                        </form>
+                        <ul class="newsletter-social">
+                            <li><a href="javascript:void(0)"><i class="lni lni-facebook-original"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="lni lni-instagram"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="lni lni-google"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- End Newsletter Form -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /End Newsletter Area -->
+
+
+    <!-- Start Teachers -->
+    <section id="teachers" class="teachers section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title align-center gray-bg">
+                        <div class="section-icon wow zoomIn" data-wow-delay=".4s">
+                            <i class="lni lni-users"></i>
+                        </div>
+                        <h2 class="wow fadeInUp" data-wow-delay=".4s">Our Experienced Advisors</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">There are many variations of passages of Lorem
+                            Ipsum available, but the majority have suffered alteration in some form.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Single Team -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="single-team wow fadeInUp" data-wow-delay=".2s">
+                        <div class="row">
+                            <div class="col-lg-5 col-12">
+                                <!-- Image -->
+                                <div class="image">
+                                    <img src="{{ asset('landing/images/team-1.jpg') }}" alt="#">
+                                </div>
+                                <!-- End Image -->
+                            </div>
+                            <div class="col-lg-7 col-12">
+                                <div class="info-head">
+                                    <!-- Info Box -->
+                                    <div class="info-box">
+                                        <span class="designation">BSMLS</span>
+                                        <h4 class="name"><a href="teacher-details.html">Selena Gomez</a></h4>
+                                        <p>Your chance to be a trending expert in IT industries and make a successful
+                                            career completion.</p>
+                                    </div>
+                                    <!-- End Info Box -->
+                                    <!-- Social -->
+                                    <ul class="social">
+                                        <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-behance-original"></i></a>
+                                        </li>
+                                    </ul>
+                                    <!-- End Social -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Single Team -->
+                <!-- Single Team -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="single-team wow fadeInUp" data-wow-delay=".4s">
+                        <div class="row">
+                            <div class="col-lg-5 col-12">
+                                <!-- Image -->
+                                <div class="image">
+                                    <img src="{{ asset('landing/images/team-2.jpg') }}" alt="#">
+                                </div>
+                                <!-- End Image -->
+                            </div>
+                            <div class="col-lg-7 col-12">
+                                <div class="info-head">
+                                    <!-- Info Box -->
+                                    <div class="info-box">
+                                        <span class="designation">BSN</span>
+                                        <h4 class="name"><a href="teacher-details.html">Michel Vouge</a></h4>
+                                        <p>Your chance to be a trending expert in IT industries and make a successful
+                                            career completion.</p>
+                                    </div>
+                                    <!-- End Info Box -->
+                                    <!-- Social -->
+                                    <ul class="social">
+                                        <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-behance-original"></i></a>
+                                        </li>
+                                    </ul>
+                                    <!-- End Social -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Single Team -->
+                <!-- Single Team -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="single-team wow fadeInUp" data-wow-delay=".2s">
+                        <div class="row">
+                            <div class="col-lg-5 col-12">
+                                <!-- Image -->
+                                <div class="image">
+                                    <img src="{{ asset('landing/images/team-3.jpg') }}" alt="#">
+                                </div>
+                                <!-- End Image -->
+                            </div>
+                            <div class="col-lg-7 col-12">
+                                <div class="info-head">
+                                    <!-- Info Box -->
+                                    <div class="info-box">
+                                        <span class="designation">BSMB</span>
+                                        <h4 class="name"><a href="teacher-details.html">Jen Maroney</a></h4>
+                                        <p>Your chance to be a trending expert in IT industries and make a successful
+                                            career completion.</p>
+                                    </div>
+                                    <!-- End Info Box -->
+                                    <!-- Social -->
+                                    <ul class="social">
+                                        <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-behance-original"></i></a>
+                                        </li>
+                                    </ul>
+                                    <!-- End Social -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Single Team -->
+                <!-- Single Team -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="single-team wow fadeInUp" data-wow-delay=".4s">
+                        <div class="row">
+                            <div class="col-lg-5 col-12">
+                                <!-- Image -->
+                                <div class="image">
+                                    <img src="{{ asset('landing/images/team-4.jpg') }}" alt="#">
+                                </div>
+                                <!-- End Image -->
+                            </div>
+                            <div class="col-lg-7 col-12">
+                                <div class="info-head">
+                                    <!-- Info Box -->
+                                    <div class="info-box">
+                                        <span class="designation">BSM</span>
+                                        <h4 class="name"><a href="teacher-details.html">Cindy Chow</a></h4>
+                                        <p>Your chance to be a trending expert in IT industries and make a successful
+                                            career completion.</p>
+                                    </div>
+                                    <!-- End Info Box -->
+                                    <!-- Social -->
+                                    <ul class="social">
+                                        <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><i class="lni lni-behance-original"></i></a>
+                                        </li>
+                                    </ul>
+                                    <!-- End Social -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Single Team -->
+            </div>
+        </div>
+    </section>
+    <!--/ End Teachers Area -->
+
+
+    <!-- Start Clients Area -->
+    <div class="client-logo-section">
+        <div class="container">
+            <div class="client-logo-wrapper">
+                <div class="client-logo-carousel d-flex align-items-center justify-content-between">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Clients Area -->
+
+    <!-- Start Footer Area -->
+    <footer class="footer">
+        <!-- Start Middle Top -->
+        <div class="footer-middle">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="f-about single-footer">
+                            <div class="logo">
+                                <a href="javascript:void(0)"><img src="{{ asset('landing/images/logo.png') }}"
+                                        alt="Logo"></a>
+                            </div>
+                            <p>Nemo enim enim voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
+                                consequ magni dolores eos qui ratione.</p>
+                            <div class="footer-social">
+                                <ul>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-facebook-original"></i></a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-google"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="single-footer sm-custom-border recent-blog">
+                            <h3>Latest News</h3>
+                            <ul>
+                                <li>
+                                    <a href="javascript:void(0)"><img
+                                            src="{{ asset('landing/images/footer-news1.jpg') }}" alt="#">
+                                        Top 10 books you Must read in 2023
+                                    </a>
+                                    <span class="date"><i class="lni lni-calendar"></i>July 15, 2023</span>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)"><img
+                                            src="{{ asset('landing/images/footer-news2.jpg') }}" alt="#">
+                                        How to Improve Your Communication Skill
+                                    </a>
+                                    <span class="date"><i class="lni lni-calendar"></i>July 1, 2023</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="single-footer sm-custom-border f-link">
+                            <h3>Course List</h3>
+                            <ul>
+                                <li><a href="javascript:void(0)">Advance Javascript – ES6</a></li>
+                                <li><a href="javascript:void(0)">WordPress for Intermediate</a></li>
+                                <li><a href="javascript:void(0)">iOS App Development</a></li>
+                                <li><a href="javascript:void(0)">Wbsite Development</a></li>
+                                <li><a href="javascript:void(0)">Android App Development</a></li>
+                            </ul>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="single-footer footer-newsletter">
+                            <h3>Newsletter</h3>
+                            <p>Subscribe to us to always stay in touch with us and get the latest news.</p>
+                            <form action="mail/mail.php" method="get" target="_blank" class="newsletter-form">
+                                <input name="EMAIL" placeholder="Your email address" class="common-input"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your email address'"
+                                    required="" type="email">
+                                <div class="button">
+                                    <button class="btn">Subscribe Now!</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ End Footer Middle -->
+        <!-- Start Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="inner">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="left">
+                                <p>Designed and Developed by<a href="javascript:void(0)" rel="nofollow"
+                                        target="_blank">TDCI</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Footer Middle -->
+    </footer>
+    <!--/ End Footer Area -->
+
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top btn-hover">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <!-- ========================= JS here ========================= -->
+    <script src="{{ asset('landing/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('landing/js/count-up.min.js') }}"></script>
+    <script src="{{ asset('landing/js/wow.min.js') }}"></script>
+    <script src="{{ asset('landing/js/tiny-slider.js') }}"></script>
+    <script src="{{ asset('landing/js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('landing/js/main.js') }}"></script>
+    <script type="text/javascript">
+        //========= Hero Slider 
+        tns({
+            container: '.hero-slider',
+            items: 1,
+            slideBy: 'page',
+            autoplay: false,
+            mouseDrag: true,
+            gutter: 0,
+            nav: true,
+            controls: false,
+            controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+        });
+        //========= testimonial 
+        tns({
+            container: '.testimonial-slider',
+            items: 3,
+            slideBy: 'page',
+            autoplay: false,
+            mouseDrag: true,
+            gutter: 0,
+            nav: true,
+            controls: false,
+            controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 1,
+                },
+                768: {
+                    items: 2,
+                },
+                992: {
+                    items: 2,
+                },
+                1170: {
+                    items: 3,
+                }
+            }
+        });
+        //====== Clients Logo Slider
+        tns({
+            container: '.client-logo-carousel',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 3,
+                },
+                768: {
+                    items: 4,
+                },
+                992: {
+                    items: 4,
+                },
+                1170: {
+                    items: 6,
+                }
+            }
+        });
+        //========= glightbox
+        GLightbox({
+            'href': 'https://www.youtube.com/watch?v=uZI5oye0U_w',
+            'type': 'video',
+            'source': 'youtube', //vimeo, youtube or local
+            'width': 900,
+            'autoplayVideos': true,
+        });
+    </script>
+
+
+</body>
+
+</html>
