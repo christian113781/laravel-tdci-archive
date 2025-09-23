@@ -3,6 +3,7 @@ Installation: Add ENV File from zip
 Run:
 composer install
 php artisan storage:link
+add tdci database in mysql
 
 
 
