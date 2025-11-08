@@ -92,7 +92,7 @@
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
                                     <p class="card-category">Archive Request</p>
-                                    <h4 class="card-title">{{ $verifiedPatronCount }}</h4>
+                                    <h4 class="card-title">{{ $requestCount }}</h4>
                                 </div>
                             </div>
                         </div>

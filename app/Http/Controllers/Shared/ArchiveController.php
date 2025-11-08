@@ -111,13 +111,12 @@ class ArchiveController extends Controller {
     }
 
     $filteredCount = $query->count();
-    $bookmarkCount = Auth::user()->bookmarks()->count();
 
     
     $query->orderByDesc('views')->orderByDesc('created_at');
     $archives = $query->paginate(50)->withQueryString();
 
-    return view('shared.archive_patron', compact('archives', 'totalArchives', 'filteredCount','bookmarkCount'));
+    return view('shared.archive_patron', compact('archives', 'totalArchives', 'filteredCount'));
 }
 
 
