@@ -41,16 +41,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>AVATAR</th>
-                                        <th>NAME</th>
-                                        <th>EMAIL</th>
-                                        <th>ROLE</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </tfoot>
+                                
                                 <tbody>
                                     @foreach ($users as $key => $user)
                                         <tr>

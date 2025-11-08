@@ -78,14 +78,7 @@
                                     </tr>
                                 </thead>
 
-                                <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>NAME</th>
-                                        <th>DATE CREATED</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </tfoot>
+                                
                                 <tbody>
                                     @foreach ($keywords as $index => $keyword)
                                         <tr>
