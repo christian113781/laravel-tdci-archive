@@ -46,7 +46,7 @@ class AdminControllerProfile extends Controller
                 // generate random file name
                 $randomName = Str::random(40) . '.' . $extension;
 
-                $folder = 'uploadImg';  // this will be under storage/app/public/uploadImg
+                $folder = 'avatar';  // this will be under storage/app/public/uploadImg
 
                 // Delete old avatar if exists
                 if ($user->avatar) {

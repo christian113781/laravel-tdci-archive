@@ -38,7 +38,7 @@
 					<div class="logo-header" data-background-color="dark">
 
 						<a href="index.html" class="logo">
-							<img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="Logo" class="navbar-brand" height="20">
+							<img src="{{ asset('assets/img/kaiadmin/logo_light.png') }}" alt="Logo" class="navbar-brand" height="20">
 						</a>
 						<div class="nav-toggle">
 							<button class="btn btn-toggle toggle-sidebar">
@@ -61,15 +61,8 @@
 			</div>
 			
 			<div class="container">
-				@yield('index')
-                @yield('archive')
-                @yield('student')
-				@yield('keyword')
-                @yield('user')
-                @yield('program')
-                @yield('sysinfo')
-				@yield('archive-request')
-				@yield('profile')
+				@yield('pages')
+        
 
 			</div>
 			
@@ -150,10 +143,8 @@
 
 	</script>
 
-    @stack('archive-script')
-    @stack('program-script')
-	@stack('keyword-script')
-	@stack('profile-script')
+    @stack('script')
+
 	
 
 </body>

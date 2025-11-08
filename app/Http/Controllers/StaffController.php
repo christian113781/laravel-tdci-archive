@@ -28,11 +28,6 @@ class StaffController extends Controller
     $requestPendingCount = ArchiveAccessRequest::where('status', 'pending')->count();
 
 
-
-    $verifiedPatronCount = User::where('status', 'verified')
-    ->where('role', 'patron')
-    ->count();
-
     $notVerifiedPatronCount = User::where('status', '!=', 'verified')
     ->where('role', 'patron')
     ->count();
@@ -41,6 +36,6 @@ class StaffController extends Controller
     $publishedArchiveCount   = Archive::where('status', 'Publish')->count();
     $unpublishedArchiveCount = Archive::where('status', '!=', 'Publish')->count();
 
-    return view('staff.staff_index', compact('archiveCount','programCount','publishedArchiveCount','requestPendingCount','unpublishedArchiveCount','requestCount','userName','verifiedPatronCount', 'notVerifiedPatronCount'));
+    return view('staff.staff_index', compact('archiveCount','programCount','publishedArchiveCount','requestPendingCount','unpublishedArchiveCount','requestCount','userName', 'notVerifiedPatronCount'));
     }
 }

@@ -49,7 +49,7 @@
                     <div class="logo-header" data-background-color="dark">
 
                         <a href="#" class="logo">
-                            <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="Logo"
+                            <img src="{{ asset('assets/img/kaiadmin/logo_light.png') }}" alt="Logo"
                                 class="navbar-brand" height="20">
                         </a>
                         <div class="nav-toggle">
@@ -73,16 +73,9 @@
             </div>
 
             <div class="container">
-                @yield('index')
-                @yield('archive')
-                @yield('patron')
-                @yield('user')
-                @yield('program')
-                @yield('curriculum')
-                @yield('sysinfo')
-                @yield('manage')
-                @yield('keyword')
-                @yield('profile')
+                @yield('pages')
+              
+
 
             </div>
 
@@ -138,15 +131,7 @@
 
     {{-- make this clean are --}}
 
-    @stack('archive-script')
-    @stack('curriculum-script')
-    @stack('program-script')
-    @stack('user-script')
-    @stack('patron-script')
-    @stack('sysinfo-script')
-    @stack('manage-script')
-    @stack('keyword-script')
-    @stack('profile-script')
+    @stack('script')
 </body>
 
 </html>

@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>TDCI - Login</title>
+    <title>Login</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="{{ asset('assets/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
 
@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
 </head>
 
-<body class="login bg-primary">
+<body class="login bg-black2">
     <div class="wrapper wrapper-login">
 
         <!-- Login Form -->

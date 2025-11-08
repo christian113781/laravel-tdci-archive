@@ -12,7 +12,7 @@
 
 @extends('admin.admin_dashboard')
 
-@section('manage')
+@section('pages')
     <div class="page-inner">
 
         <div class="page-header">
@@ -155,7 +155,7 @@
         </div>
     </div>
 @endsection
-@push('manage-script')
+@push('script')
     <script>
         $('#alert_demo_8').click(function(e) {
             swal({

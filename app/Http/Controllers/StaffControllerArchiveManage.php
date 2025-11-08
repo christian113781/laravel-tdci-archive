@@ -28,46 +28,107 @@ class StaffControllerArchiveManage extends Controller
         return view('staff.staff_archive_manage', compact('archives', 'programs', 'keywords', 'archiveCode'));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'archive_code' => 'required|string|unique:archives,archive_code',
-            'title'        => 'required|string|max:255',
-            'authors'      => 'required|string|max:500',
-            'abstract'     => 'nullable|string',
-            'year'         => 'required|digits:4|integer',
-            'program_id'   => 'required|exists:programs,id',
-            'file_path'    => 'nullable|file|mimes:pdf',
-            'status'       => 'required|in:publish,unpublish',
-            'category'     => 'required|in:A,B',
-            'multiple'     => 'nullable|array',
-            'multiple.*'   => 'exists:keywords,id',
-        ]);
 
-        // Handle file upload
-        $filePath = $request->hasFile('file_path')
-            ? $request->file('file_path')->store('archives', 'public')
-            : null;
+    public function storeArchive()
+{
 
-        // Create archive
-        $archive = Archive::create([
-            'archive_code' => $request->archive_code,
-            'title'        => $request->title,
-            'authors'      => $request->authors,
-            'abstract'     => $request->abstract,
-            'year'         => $request->year,
-            'program_id'   => $request->program_id,
-            'category'     => $request->category,
-            'user_id'      => auth()->id(),
-            'file_path'    => $filePath,
-            'status'       => $request->status,
-        ]);
+    // Fetch for dropdowns
+        $programs = Program::all();
+        $keywords = Keyword::all();
+    // generate the “next” archive code
+    $datePart = now()->format('ymd');                // e.g. “251020”
+    $prefix   = 'ARC-' . $datePart . '-';
 
-        // Sync keywords
-        $archive->keywords()->sync($request->multiple ?? []);
+    $last     = \App\Models\Archive::where('archive_code', 'like', $prefix . '%')
+                                    ->orderBy('archive_code', 'desc')
+                                    ->first();
 
-        return redirect()->back()->with('success', 'Archive stored successfully!');
+    if ($last) {
+        $lastSeq = (int) substr($last->archive_code, strrpos($last->archive_code, '-') + 1);
+        $nextSeq = $lastSeq + 1;
+    } else {
+        $nextSeq = 1;
     }
+
+    $seqPart  = str_pad($nextSeq, 3, '0', STR_PAD_LEFT);   
+    $nextCode = $prefix . $seqPart;                
+
+    return view('staff.staff_archive_new', compact('nextCode', 'programs', 'keywords'));
+}
+
+
+
+
+
+  public function store(Request $request)
+    {
+
+    $validated = $request->validate([
+    'archive_code' => 'required|string|unique:archives,archive_code',
+    'archive_title' => 'required|string',
+    'archive_citation' => 'required|string',
+    'archive_author' => 'required|string|max:500',
+    'archive_subject' => 'nullable|string',
+    'archive_year' => 'required|digits:4|integer',
+    'archive_program' => 'required|exists:programs,id',
+    'thesis_file' => 'required|file|mimes:pdf',
+    'tables' => 'nullable|file|mimes:pdf',
+    'recommendation' => 'nullable|file|mimes:pdf',
+    'figures' => 'nullable|file|mimes:pdf',
+    'archive_category' => 'required|in:A,B',
+    'multiple' => 'array',
+    'multiple.*' => 'exists:keywords,id',
+
+    ]);
+
+    $archiveCode = $request->input('archive_code');
+    $folder      = "archives/{$archiveCode}";
+
+     $fileInputs = [
+        'thesis_file'        => 'thesis',
+        'tables_file'        => 'tables',
+        'recommendation_file' => 'recommendation',
+        'figures_file'         => 'figures',
+    ];
+
+    $paths = [];
+    foreach ($fileInputs as $inputName => $basename) {
+        if ($request->hasFile($inputName)) {
+            $file      = $request->file($inputName);
+            $extension = $file->getClientOriginalExtension();
+            $filename  = "{$basename}.{$extension}";
+            $paths[$inputName] = $file
+                ->storeAs($folder, $filename, 'public');
+        } else {
+            $paths[$inputName] = null;
+        }
+    }
+
+
+
+    $archive = Archive::create([
+        'archive_code' => $request->archive_code,
+        'citation' => $request->archive_citation,
+        'title' => $request->archive_title,
+        'authors' => $request->archive_author,
+        'subject' => $request->archive_subject,
+        'year' => $request->archive_year,
+        'program_id' => $request->archive_program,
+        'category' => $request->archive_category,
+        'user_id' => auth()->id(),
+        'thesis_file'         => $paths['thesis_file'],
+        'tables_file'         => $paths['tables_file'],
+        'recommendation_file' => $paths['recommendation_file'],
+        'figures_file'        => $paths['figures_file'],
+    ]);
+
+    // Sync keywords safely
+    $archive->keywords()->sync($request->multiple ?? []);
+
+    return redirect()->route('staff.archive.manage')
+                 ->with('success', 'Archive stored successfully!');
+}
+
 
     public function getArchive($id)
     {
@@ -76,76 +137,108 @@ class StaffControllerArchiveManage extends Controller
         return response()->json([
             'file_path' => $archive->file_path ? asset('storage/' . $archive->file_path) : null,
             'title'     => $archive->title,
-            'abstract'  => $archive->abstract,
+            'subject'  => $archive->subject,
             'authors'   => $archive->authors,
             'program'   => $archive->program->name ?? null,
             'year'      => $archive->year,
         ]);
     }
 
-    public function destroy($id)
-    {
-        $archive = Archive::findOrFail($id);
 
-        // Delete file if it exists
-        if ($archive->file_path && Storage::disk('public')->exists($archive->file_path)) {
-            Storage::disk('public')->delete($archive->file_path);
-        }
+    // added NEW
+    public function destroy($id){
+    $archive = Archive::findOrFail($id);
 
-        $archive->delete();
+    // Construct the folder path
+    $folder = "archives/{$archive->archive_code}";
 
-        return redirect()->route('staff.archive.manage')
-            ->with('delete_success', 'Archive deleted successfully!');
+    // Delete the directory and everything inside
+    \Storage::disk('public')->deleteDirectory($folder);
+
+    // Then delete the database record
+    $archive->delete();
+
+    return redirect()->back()->with('success', 'archive deleted successfully!');    
     }
 
-    public function edit($id)
-    {
-        $archive = Archive::with('keywords')->findOrFail($id);
-        return response()->json($archive);
+
+    // added new
+    public function edit($id) {
+    // fetch the archive record
+    $archive = Archive::with(['keywords'])->findOrFail($id);
+
+    $programs  = Program::all();    // or however you get programs
+    $keywords  = Keyword::all();    // or however you get keywords
+
+    return view('staff.staff_archive_edit', compact('archive','programs','keywords'));
     }
+
 
     public function update(Request $request, $id)
-    {
-        $archive = Archive::findOrFail($id);
+{
+    $archive = Archive::findOrFail($id);
 
-        $validated = $request->validate([
-            'title'      => 'required|string|max:255',
-            'authors'    => 'required|string|max:500',
-            'abstract'   => 'nullable|string',
-            'year'       => 'required|digits:4|integer',
-            'program_id' => 'required|exists:programs,id',
-            'file_path'  => 'nullable|file|mimes:pdf',
-            'status'     => 'required|in:publish,unpublish',
-            'category'   => 'required|in:A,B',
-            'multiple'   => 'nullable|array',
-            'multiple.*' => 'exists:keywords,id',
-        ]);
+    $validated = $request->validate([
+        'archive_title'        => 'required|string',
+        'archive_citation'     => 'required|string',
+        'archive_author'       => 'required|string|max:500',
+        'archive_subject'      => 'nullable|string',
+        'archive_year'         => 'required|digits:4|integer',
+        'archive_program'      => 'required|exists:programs,id',
+        'thesis_file'          => 'nullable|file|mimes:pdf',
+        'tables_file'          => 'nullable|file|mimes:pdf',
+        'recommendation_file'  => 'nullable|file|mimes:pdf',
+        'figures_file'         => 'nullable|file|mimes:pdf',
+        'archive_category'     => 'required|in:A,B',
+        'multiple'             => 'array',
+        'multiple.*'           => 'exists:keywords,id',
+    ]);
 
-        // If new file uploaded, replace old
-        if ($request->hasFile('file_path')) {
-            if ($archive->file_path && Storage::disk('public')->exists($archive->file_path)) {
-                Storage::disk('public')->delete($archive->file_path);
+    $folder = "archives/{$archive->archive_code}";
+
+    // Define input => base filename map
+    $fileInputs = [
+        'thesis_file'         => 'thesis',
+        'tables_file'         => 'tables',
+        'recommendation_file' => 'recommendation',
+        'figures_file'        => 'figures',
+    ];
+
+    // Handle file replacements
+    foreach ($fileInputs as $inputName => $basename) {
+        if ($request->hasFile($inputName)) {
+            // Delete old file if exists
+            if ($archive->$inputName && Storage::disk('public')->exists($archive->$inputName)) {
+                Storage::disk('public')->delete($archive->$inputName);
             }
-            $archive->file_path = $request->file('file_path')->store('archives', 'public');
+
+            // Store new file using same folder/filename structure
+            $file      = $request->file($inputName);
+            $extension = $file->getClientOriginalExtension();
+            $filename  = "{$basename}.{$extension}";
+
+            $archive->$inputName = $file->storeAs($folder, $filename, 'public');
         }
-
-        // Update fields
-        $archive->update([
-            'title'      => $request->title,
-            'authors'    => $request->authors,
-            'abstract'   => $request->abstract,
-            'year'       => $request->year,
-            'program_id' => $request->program_id,
-            'status'     => $request->status,
-            'category'   => $request->category,
-            'file_path'  => $archive->file_path, // Keep old if not replaced
-        ]);
-
-        // Sync keywords
-        $archive->keywords()->sync($request->multiple ?? []);
-
-        return redirect()->back()->with('success', 'Archive updated successfully!');
     }
+
+    // Update non-file fields
+    $archive->update([
+        'citation'    => $request->archive_citation,
+        'title'       => $request->archive_title,
+        'authors'     => $request->archive_author,
+        'subject'     => $request->archive_subject,
+        'year'        => $request->archive_year,
+        'program_id'  => $request->archive_program,
+        'category'    => $request->archive_category,
+    ]);
+
+    // Sync keywords
+    $archive->keywords()->sync($request->multiple ?? []);
+
+    return redirect()->route('staff.archive.manage')
+                 ->with('success', 'Archive stored successfully!');
+}
+
 
     public function updateStatus($id)
     {

@@ -8,6 +8,7 @@
     ]);
     $staffActiveKeyword = request()->routeIs(['staff.keyword']);
     $staffActiveProgram = request()->routeIs(['staff.program']);
+    $staffProfileActive = request()->routeIs(['staff.profile']);
 @endphp
 
 
@@ -16,10 +17,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
 
-            <a href="" class="logo">
-                <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand" class="navbar-brand"
-                    height="20">
-            </a>
+            
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
                     <i class="gg-menu-right"></i>
@@ -88,44 +86,23 @@
                     </div>
                 </li>
 
-                <li class="nav-item {{ $staffActiveKeyword ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#keyword"
-                        aria-expanded="{{ $staffActiveKeyword ? 'true' : 'false' }}">
-                        <i class="fas fa-key"></i>
+
+                 <li class="nav-item {{ $staffActiveKeyword ? 'active' : '' }}">
+                    <a href="{{ route('staff.keyword') }}">
+                        <i class="fas fa-at"></i>
                         <p>Keywords</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ $staffActiveKeyword ? 'show' : '' }}" id="keyword">
-                        <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('staff.keyword') ? 'active' : '' }}">
-                                <a href="{{ route('staff.keyword') }}">
-                                    <span class="sub-item">Keyword List</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
                 </li>
 
 
-                <li class="nav-item {{ $staffActiveProgram ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#program"
-                        aria-expanded="{{ $staffActiveProgram ? 'true' : 'false' }}">
-                        <i class="fas fa-laptop"></i>
+                  <li class="nav-item {{ $staffActiveProgram ? 'active' : '' }}">
+                    <a href="{{ route('staff.program') }}">
+                        <i class="fab fa-discourse"></i>
                         <p>Programs</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ $staffActiveProgram ? 'show' : '' }}" id="program">
-                        <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('staff.program') ? 'active' : '' }}">
-                                <a href="{{ route('staff.program') }}">
-                                    <span class="sub-item">Program List</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
                 </li>
+
+
 
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
@@ -135,10 +112,11 @@
                 </li>
 
                 
-                <li class="nav-item">
-                    <a href="#">
-                        <i class="fas fa-cogs"></i>
-                        <p>Settings</p>
+                
+                <li class="nav-item {{ $staffProfileActive ? 'active' : '' }}">
+                    <a href="{{ route('staff.profile') }}">
+                        <i class="fas fa-user-shield"></i>
+                        <p>Profile</p>
                     </a>
                 </li>
 

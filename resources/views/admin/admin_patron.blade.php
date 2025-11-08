@@ -1,34 +1,21 @@
 @extends('admin.admin_dashboard')
 
-@section('patron')
+@section('pages')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables.Net</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Datatables</a>
-                </li>
-            </ul>
+             <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+     <li class="breadcrumb-item active" aria-current="page">Manage</li>
+      <li class="breadcrumb-item active" aria-current="page">Patrons</li>
+  </ol>
+</nav>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">List of Patrons</h4>
+                        <h4 class="card-title">Patrons</h4>
                     </div>
                     <div class="card-body">
 
@@ -193,7 +180,7 @@
         </div>
     </div>
 @endsection
-@push('patron-script')
+@push('script')
     <script>
         $(document).ready(function() {
             $('#basic-datatables').DataTable({});
@@ -262,7 +249,7 @@
                 let lastName = $(this).data('last_name');
                 let email = $(this).data('email');
                 let avatar = $(this).data('avatar');
-                let status = $(this).data('status'); // get from data-status
+                let status = $(this).data('status'); 
 
                 // fill into modal
                 $('#view-name').val(firstName + ' ' + lastName);

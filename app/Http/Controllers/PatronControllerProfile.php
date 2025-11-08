@@ -46,7 +46,7 @@ class PatronControllerProfile extends Controller
                 // generate random file name
                 $randomName = Str::random(40) . '.' . $extension;
 
-                $folder = 'uploadImg';  // this will be under storage/app/public/uploadImg
+                $folder = 'avatar';  // this will be under storage/app/public/uploadImg
 
                 // Delete old avatar if exists
                 if ($user->avatar) {
@@ -66,10 +66,10 @@ class PatronControllerProfile extends Controller
 
             $user->save();
 
-            return redirect()->back()->with('success', 'Profile updated successfully!');
+            return redirect()->back()->with('success', 'Profile Updated Successfully!');
         } catch (\Exception $e) {
             \Log::error('Profile update failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+           return redirect()->back()->with('error', 'Something went wrong. Please Fill Correctly.');
         }
     }
 }

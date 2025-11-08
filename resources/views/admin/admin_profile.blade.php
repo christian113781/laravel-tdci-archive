@@ -1,29 +1,16 @@
 @extends('admin.admin_dashboard')
 
-@section('profile')
+@section('pages')
     <div class="page-inner">
 
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Profile</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Manage Profile</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+     <li class="breadcrumb-item active" aria-current="page">Manage</li>
+      <li class="breadcrumb-item active" aria-current="page">Profile</li>
+  </ol>
+</nav>
         </div>
 
         <div class="row">
@@ -150,7 +137,7 @@
         </div>
     </div>
 @endsection
-@push('profile-script')
+@push('script')
     <script>
         @if (session('success'))
             swal({

@@ -1,28 +1,15 @@
 @extends('staff.staff_dashboard')
 
-@section('archive')
+@section('pages')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Archives</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Archive List</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+      <li class="breadcrumb-item active" aria-current="page">Archive</li>
+      <li class="breadcrumb-item active" aria-current="page">List</li>
+  </ol>
+</nav>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -42,7 +29,7 @@
                                         <option value="3" {{ request('field') == 3 ? 'selected' : '' }}>Keyword</option>
                                         <option value="5" {{ request('field') == 5 ? 'selected' : '' }}>Program</option>
                                         <option value="4" {{ request('field') == 4 ? 'selected' : '' }}>Year</option>
-                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Abstract
+                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Subject
                                         </option>
                                     </select>
                                 </div>
@@ -99,7 +86,7 @@
                                 <thead>
                                     <tr>
                                         <th>TITLE</th>
-                                        <th>ABSTRACT</th>
+                                        <th>SUBJECT</th>
                                         <th>AUTHOR</th>
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
@@ -112,7 +99,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>TITLE</th>
-                                        <th>ABSTRACT</th>
+                                        <th>SUBJECT</th>
                                         <th>AUTHOR</th>
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
@@ -126,7 +113,7 @@
                                     @foreach ($archives as $archive)
                                         <tr>
                                             <td style="text-align: justify;">{{ Str::limit($archive->title, 120) }}</td>
-                                            <td style="text-align: justify;">{{ Str::limit($archive->abstract, 120) }}</td>
+                                            <td style="text-align: justify;">{{ Str::limit($archive->subject, 120) }}</td>
                                             <td>{{ $archive->authors }}</td>
                                             <td>{{ $archive->year }}</td>
                                             <td>{{ $archive->program->name ?? 'N/A' }}</td>
@@ -144,7 +131,7 @@
                                                 @if ($archive->category === 'A')
                                                     <span class="badge bg-info fs-7 px-2 py-2">GENERAL</span>
                                                 @elseif ($archive->category === 'B')
-                                                    <span class="badge bg-danger fs-7 px-2 py-2">RESTRICTED</span>
+                                                    <span class="badge bg-danger fs-7 px-2 py-2">LIMITED</span>
                                                 @else
                                                     <span class="badge bg-secondary fs-7 px-3 py-2">N/A</span>
                                                 @endif
@@ -175,7 +162,7 @@
         </div>
     </div>
 @endsection
-@push('archive-script')
+@push('script')
     <script>
         $('#dateyear').datetimepicker({
             format: 'YYYY',
@@ -276,12 +263,12 @@
 <div class="mb-4 px-3">
     <h4 class="fw-bold mb-3 text-center">${data.title}</h4>
 
-     ${data.abstract ? `
+     ${data.subject ? `
             <div class="mb-3 d-flex justify-content-between align-items-start">
-                <p class="mb-0"><strong>Abstract:</strong></p>
+                <p class="mb-0"><strong>Subject:</strong></p>
                 ${data.year ? `<p class="mb-0"><strong>Year:</strong> ${data.year}</p>` : ''}
             </div>
-            <p style="text-align: justify;">${data.abstract}</p>
+            <p style="text-align: justify;">${data.subject}</p>
         ` : ''}
 
     <div class="row mb-3">

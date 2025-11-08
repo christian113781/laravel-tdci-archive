@@ -21,7 +21,7 @@ class AdminControllerManage extends Controller
     $user = new \App\Models\User(); // or whatever your User model is
     return view('admin.admin_manage', compact('user'));
     }   
-      
+    
 
 
     public function fetchEditID($id)

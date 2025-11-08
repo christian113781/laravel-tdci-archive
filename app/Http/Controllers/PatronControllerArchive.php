@@ -7,60 +7,66 @@ use App\Models\Archive;
 use App\Models\Program;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ArchiveAccessRequest;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\Bookmark;
 class PatronControllerArchive extends Controller
 {
 
 public function index(Request $request)
 {
-    // Base query with relationships, only published archives
-    $query = Archive::with(['program'])
-                    ->where('status', 'Publish');
+ // Base query with relationships, only published archives
+$query = Archive::with(['program', 'keywords', 'bookmarks'])
+                ->where('status', 'Publish');
 
-    // Total before filters
-    $totalArchives = Archive::where('status', 'Publish')->count();
+// Total before filters
+$totalArchives = Archive::where('status', 'Publish')->count();
 
-    // Apply filters if any
-    if ($request->filled('field') && $request->filled('search')) {
-        $search = $request->input('search');
-        $field  = $request->input('field');
+// Apply filters if any
+if ($request->filled('field') && $request->filled('search')) {
+    $search = $request->input('search');
+    $field  = $request->input('field');
 
-        switch ($field) {
-            case '1': // Title
-                $query->where('title', 'like', "%$search%");
-                break;
-            case '2': // Author (from archive table)
-                $query->where('authors', 'like', "%$search%");
-                break;
-            case '3': // Keyword
-                $query->whereHas('keywords', function($q) use ($search) {
-                    $q->where('name', 'like', "%$search%");
-                });
-                break;
-            case '4': // Year
-                $query->where('year', $search);
-                break;
-            case '5': // Program
-                $query->whereHas('program', function($q) use ($search) {
-                    $q->where('name', 'like', "%$search%");
-                });
-                break;
-            case '6': // Abstract
-                $query->where('abstract', 'like', "%$search%");
-                break;
-        }
+    switch ($field) {
+        case '1': // Title
+            $query->where('title', 'like', "%$search%");
+            break;
+
+        case '2': // Author
+            $query->where('authors', 'like', "%$search%");
+            break;
+
+        case '3': // Keyword
+            $query->whereHas('keywords', function($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
+            break;
+
+        case '4': // Year
+            $query->where('year', $search);
+            break;
+
+        case '5': // Program
+            $query->whereHas('program', function($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
+            break;
+
+        case '6': // Subject
+            $query->where('subject', 'like', "%$search%");
+            break;
     }
+}
 
-    // Count after filter
-    $filteredCount = $query->count();
+// Count after filter
+$filteredCount = $query->count();
 
-    // Order by views first, then latest created
-    $query->orderByDesc('views')->orderByDesc('created_at');
+// Order by views first, then latest created
+$query->orderByDesc('views')->orderByDesc('created_at');
 
-    // Paginate
-    $archives = $query->paginate(50)->withQueryString();
+// Paginate
+$archives = $query->paginate(50)->withQueryString();
 
-    return view('patron.patron_archive', compact('archives', 'totalArchives', 'filteredCount'));
+return view('patron.patron_archive', compact('archives', 'totalArchives', 'filteredCount'));
 }
 
 
@@ -81,7 +87,7 @@ public function getArchive($id)
         'id'             => $archive->id, // <--- add this
         'file_path'      => asset('storage/' . $archive->file_path),
         'title'          => $archive->title,
-        'abstract'       => $archive->abstract,
+        'subject'       => $archive->subject,
         'authors'        => $archive->authors ?? null,
         'program'        => $archive->program->name ?? null,
         'year'           => $archive->year ?? null,
@@ -121,4 +127,28 @@ public function requestAccess($id)
         'status'  => $request->status,
     ]);
 }
+
+ public function toggleBookmark($id)
+    {
+        $userId = Auth::id();
+
+        $bookmark = Bookmark::where('user_id', $userId)
+                            ->where('archive_id', $id)
+                            ->first();
+
+        if ($bookmark) {
+            $bookmark->delete();
+            $message = 'Bookmark removed successfully!';
+        } else {
+            Bookmark::create([
+                'user_id' => $userId,
+                'archive_id' => $id,
+            ]);
+            $message = 'Bookmark added successfully!';
+        }
+
+        return redirect()->back()->with('success', $message);
+    }
+
+
 }

@@ -13,12 +13,17 @@ return new class extends Migration
             $table->id();
             $table->string('archive_code')->unique();
             $table->string('title');
-            $table->text('abstract');
+            $table->text('subject');
             $table->year('year');
             $table->unsignedBigInteger('program_id'); 
             $table->string('authors')->nullable();
             $table->enum('category', ['A', 'B'])->default('A'); // A = general, B = restricted
-            $table->string('file_path');
+            $table->string('file_path')->nullable();
+            $table->string('thesis_file')->nullable();
+            $table->string('tables_file')->nullable();
+            $table->string('figures_file')->nullable();
+            $table->string('recommendation_file')->nullable();
+            $table->string('citation')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('views')->default(0); // track number of views
             $table->enum('status', ['Unpublish', 'Publish'])->default('Unpublish');

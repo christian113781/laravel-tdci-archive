@@ -3,15 +3,16 @@
     $patronArchiveActive = request()->routeIs('patron.archive');
     $patronArchiveRequestActive = request()->routeIs('patron.archive.request');
     $patronDashboardActive = request()->routeIs('patron.dashboard');
+    $patronBookmarksActive = request()->routeIs('patron.bookmark');
 @endphp
 
 <div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="{{ route('patron.dashboard') }}" class="logo">
-                <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand" class="navbar-brand" height="20">
-            </a>
+            {{-- <a href="{{ route('patron.dashboard') }}" class="logo">
+               <h1 class="text-white">tdci</h1>
+            </a> --}}
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
                     <i class="gg-menu-right"></i>
@@ -57,18 +58,28 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ $patronProfileActive ? 'active' : '' }}">
-                    <a href="{{ route('patron.profile') }}">
-                        <i class="fas fa-user-shield"></i>
-                        <p>Profile</p>
+
+                 <li class="nav-item {{ $patronBookmarksActive ? 'active' : '' }}">
+                    <a href="{{ route('patron.bookmark') }}">
+                        <i class="fas fa-bookmark"></i>
+                        <p>Bookmarks</p>
                     </a>
                 </li>
+
+                
 
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
                     <h4 class="text-section">Maintenance</h4>
+                </li>
+
+                <li class="nav-item {{ $patronProfileActive ? 'active' : '' }}">
+                    <a href="{{ route('patron.profile') }}">
+                        <i class="fas fa-user-shield"></i>
+                        <p>Profile</p>
+                    </a>
                 </li>
 
             </ul>

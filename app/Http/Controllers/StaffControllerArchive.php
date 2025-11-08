@@ -45,8 +45,8 @@ public function index(Request $request)
                     $q->where('name', 'like', "%$search%");
                 });
                 break;
-            case '6': // Abstract
-                $query->where('abstract', 'like', "%$search%");
+            case '6': // Subject
+                $query->where('subject', 'like', "%$search%");
                 break;
         }
     }
@@ -81,7 +81,7 @@ public function getArchive($id)
         'id'             => $archive->id, // <--- add this
         'file_path'      => asset('storage/' . $archive->file_path),
         'title'          => $archive->title,
-        'abstract'       => $archive->abstract,
+        'subject'       => $archive->subject,
         'authors'        => $archive->authors ?? null,
         'program'        => $archive->program->name ?? null,
         'year'           => $archive->year ?? null,

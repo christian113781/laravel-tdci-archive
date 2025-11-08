@@ -1,29 +1,16 @@
 @extends('staff.staff_dashboard')
 
-@section('keyword')
+@section('pages')
     <div class="page-inner">
 
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables.Net</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Datatables</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage</li>
+    <li class="breadcrumb-item active" aria-current="page">Keyword</li>
+  </ol>
+</nav>
         </div>
 
         <div class="row">
@@ -31,7 +18,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">List of Keyword</h4>
+                            <h4 class="card-title">Keywords</h4>
                             <button class="btn btn-primary btn-round ms-auto" type="button" onclick="openAddModal()">
                                 <i class="fa fa-plus"></i>
                                 Add New
@@ -67,7 +54,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer border-0">
-                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="submit" id="addRowButton" class="btn btn-primary">Save</button>
                                                 <button type="button" class="btn btn-danger"
                                                     data-bs-dismiss="modal">Close</button>
                                             </div>
@@ -91,14 +78,7 @@
                                     </tr>
                                 </thead>
 
-                                <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>NAME</th>
-                                        <th>DATE CREATED</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </tfoot>
+                               
                                 <tbody>
                                     @foreach ($keywords as $index => $keyword)
                                         <tr>
@@ -140,7 +120,7 @@
         </div>
     </div>
 @endsection
-@push('keyword-script')
+@push('script')
     <script>
         $(document).ready(function() {
             $('#basic-datatables').DataTable();
@@ -174,15 +154,20 @@
         }
 
         $('#addRowModal').on('hidden.bs.modal', function() {
-            // Reset form fields
             document.getElementById('keywordForm').reset();
-
-            // Reset method field to POST for adding new entries
             document.getElementById('formMethod').value = 'POST';
 
             // Reset modal title
             document.getElementById('modalTitle').textContent = 'Add Keyword';
         });
+
+        
+        // Disable submit to prevent multiple clicks
+        $('#keywordForm').on('submit', function() {
+            const btn = $('#addRowButton');
+            btn.prop('disabled', true).text('Saving');
+        });
+
 
         $(document).on('click', '.btn-delete', function(e) {
             e.preventDefault();

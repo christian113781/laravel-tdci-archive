@@ -1,29 +1,17 @@
 @extends('admin.admin_dashboard')
 
-@section('user')
+@section('pages')
     <div class="page-inner">
 
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables.Net</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Datatables</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+     <li class="breadcrumb-item active" aria-current="page">Manage</li>
+      <li class="breadcrumb-item active" aria-current="page">User Role</li>
+  </ol>
+</nav>
+
         </div>
 
 
@@ -115,12 +103,22 @@
         </div>
     </div>
 @endsection
-@push('user-script')
+@push('script')
     <script>
         $(document).ready(function() {
             $('#basic-datatables').DataTable({});
         });
 
+
+        $(document).ready(function() {
+    $(document).on('click', '.btn-view-user', function() {
+        const id = $(this).data('id');
+        alert('Clicked! User ID: ' + id);
+        console.log('Clicked! User ID:', id);
+    });
+});
+
+       
         @if (session('success'))
             swal("Success!", "{{ session('success') }}", {
                 icon: "success",

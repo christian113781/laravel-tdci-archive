@@ -1,28 +1,15 @@
 @extends('patron.patron_dashboard')
 
-@section('archive')
+@section('pages')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Archives</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Archive List</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item active" aria-current="page">Archive</li>
+    <li class="breadcrumb-item active" aria-current="page">List</li>
+  </ol>
+</nav>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -39,10 +26,12 @@
                                         <option value="">Any field</option>
                                         <option value="1" {{ request('field') == 1 ? 'selected' : '' }}>Title</option>
                                         <option value="2" {{ request('field') == 2 ? 'selected' : '' }}>Author</option>
-                                        <option value="3" {{ request('field') == 3 ? 'selected' : '' }}>Keyword</option>
-                                        <option value="5" {{ request('field') == 5 ? 'selected' : '' }}>Program</option>
+                                        <option value="3" {{ request('field') == 3 ? 'selected' : '' }}>Keyword
+                                        </option>
+                                        <option value="5" {{ request('field') == 5 ? 'selected' : '' }}>Program
+                                        </option>
                                         <option value="4" {{ request('field') == 4 ? 'selected' : '' }}>Year</option>
-                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Abstract
+                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Subject
                                         </option>
                                     </select>
                                 </div>
@@ -99,7 +88,7 @@
                                 <thead>
                                     <tr>
                                         <th>TITLE</th>
-                                        <th>ABSTRACT</th>
+                                        <th>SUBJECT</th>
                                         <th>AUTHOR</th>
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
@@ -112,7 +101,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>TITLE</th>
-                                        <th>ABSTRACT</th>
+                                        <th>SUBJECT</th>
                                         <th>AUTHOR</th>
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
@@ -126,7 +115,7 @@
                                     @foreach ($archives as $archive)
                                         <tr>
                                             <td style="text-align: justify;">{{ Str::limit($archive->title, 120) }}</td>
-                                            <td style="text-align: justify;">{{ Str::limit($archive->abstract, 120) }}</td>
+                                            <td style="text-align: justify;">{{ Str::limit($archive->subject, 120) }}</td>
                                             <td>{{ $archive->authors }}</td>
                                             <td>{{ $archive->year }}</td>
                                             <td>{{ $archive->program->name ?? 'N/A' }}</td>
@@ -159,6 +148,24 @@
                                                         <i class="fa fa-eye"></i>
                                                     </a>
 
+                                                    @php
+                                                        $isBookmarked =
+                                                            $archive->bookmarks->where('user_id', Auth::id())->count() >
+                                                            0;
+                                                    @endphp
+
+                                                    <form action="{{ route('patron.archive.toggle', $archive->id) }}"
+                                                        method="POST" class="d-inline bookmarkForm">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <button type="submit"
+                                                            class="btn btn-sm {{ $isBookmarked ? 'btn-danger' : 'btn-secondary' }}"
+                                                            title="{{ $isBookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}">
+                                                            <i
+                                                                class="fa {{ $isBookmarked ? 'fas fas fa-bookmark' : 'fas fa-bookmark' }}"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>
@@ -175,7 +182,7 @@
         </div>
     </div>
 @endsection
-@push('archive-script')
+@push('script')
     <script>
         $('#dateyear').datetimepicker({
             format: 'YYYY',
@@ -276,23 +283,23 @@
 <div class="mb-4 px-3">
     <h4 class="fw-bold mb-3 text-center">${data.title}</h4>
 
-     ${data.abstract ? `
-            <div class="mb-3 d-flex justify-content-between align-items-start">
-                <p class="mb-0"><strong>Abstract:</strong></p>
-                ${data.year ? `<p class="mb-0"><strong>Year:</strong> ${data.year}</p>` : ''}
-            </div>
-            <p style="text-align: justify;">${data.abstract}</p>
-        ` : ''}
+     ${data.subject ? `
+                                <div class="mb-3 d-flex justify-content-between align-items-start">
+                                    <p class="mb-0"><strong>Subject:</strong></p>
+                                    ${data.year ? `<p class="mb-0"><strong>Year:</strong> ${data.year}</p>` : ''}
+                                </div>
+                                <p style="text-align: justify;">${data.subject}</p>
+                            ` : ''}
 
     <div class="row mb-3">
         ${data.program ? `
-                <div class="col-md-6 col-12 mb-2">
-                    <p class="mb-0"><strong>Program:</strong> ${data.program}</p>
-                </div>` : ''}
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <p class="mb-0"><strong>Program:</strong> ${data.program}</p>
+                                    </div>` : ''}
         ${data.authors ? `
-                <div class="col-12 mb-2">
-                    <p class="mb-0"><strong>Authors:</strong> ${data.authors}</p>
-                </div>` : ''}
+                                    <div class="col-12 mb-2">
+                                        <p class="mb-0"><strong>Authors:</strong> ${data.authors}</p>
+                                    </div>` : ''}
         <div class="col-12">
             <p class="mb-0"><strong>Category:</strong> ${data.category === 'A' ? 'GENERAL' : 'RESTRICTED'}</p>
         </div>

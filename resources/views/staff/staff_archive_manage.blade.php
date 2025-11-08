@@ -1,28 +1,22 @@
+@php
+    $role = auth()->check() ? auth()->user()->role : 'patron';
+    if (!in_array($role, ['admin', 'staff'])) {
+        $role = 'patron';
+    }
+@endphp
+
 @extends('staff.staff_dashboard')
 
-@section('archive')
+@section('pages')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Archives</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Manage</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Mange Archive</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item active" aria-current="page">Archive</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage</li>
+  </ol>
+</nav>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -30,11 +24,10 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Manage Archive</h4>
-                            <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
-                                data-bs-target="#addRowModal">
+                            <a href="{{ route('staff.manage.archive.page') }}" class="btn btn-primary btn-round ms-auto">
                                 <i class="fa fa-plus"></i>
-                                Add New Archive
-                            </button>
+                                New Archive
+                            </a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -70,7 +63,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="program">Program</label>
-                                                        <select class="form-select form-control" id="program" required
+                                                        <select class="form-select form-control" id="program"
                                                             name="program_id">
                                                             @forelse ($programs as $dept)
                                                                 <option value="{{ $dept->id }}"
@@ -129,10 +122,6 @@
                                                     </div>
                                                 </div>
 
-
-
-
-
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label>Year</label>
@@ -148,20 +137,19 @@
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="abstract">Abstract</label>
-                                                        <textarea class="form-control" id="abstract" name="abstract" rows="5" required></textarea>
+                                                        <label for="subject">Subject</label>
+                                                        <textarea class="form-control" id="subject" name="subject" rows="3" required></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label for="authors">Authors</label>
-                                                        <textarea class="form-control" id="authors" name="authors" rows="5" required
-                                                            placeholder="Fernando, Christian"></textarea>
+                                                        <textarea class="form-control" id="authors" name="authors" rows="3" required placeholder="Juan Delacruz"></textarea>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label for="file_path">Upload PDF File</label>
                                                         <div id="currentFile" class="mb-2"></div>
@@ -171,6 +159,24 @@
 
                                                     </div>
                                                 </div>
+
+
+
+
+
+
+                                                {{-- <div class="col-sm-7">
+                                                    <div class="form-group">
+                                                        <label for="citation">Recommend Citation</label>
+                                                        <textarea class="form-control" id="citation" name="citation" rows="3"></textarea>
+                                                    </div>
+                                                </div> --}}
+
+
+
+
+
+
 
                                             </div>
 
@@ -230,7 +236,7 @@
                                     <tr>
                                         <th>CODE</th>
                                         <th>TITLE</th>
-                                        <th>ABSTRACT</th>
+                                       
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
                                         <th>CATEGORY</th>
@@ -239,29 +245,12 @@
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>CODE</th>
-                                        <th>TITLE</th>
-                                        <th>ABSTRACT</th>
-                                        <th>YEAR</th>
-                                        <th>PROGRAM</th>
-                                        <th>CATEGORY</th>
-                                        <th>CREATED</th>
-                                        <th>STATUS</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </tfoot>
+                               
                                 <tbody>
                                     @foreach ($archives as $archive)
                                         <tr>
                                             <td>{{ $archive->archive_code }}</td>
-                                           <td style="text-align: left;">
-    {{ $archive->title }}
-</td>
-<td style="text-align: justify;">
-    {{ Str::limit($archive->abstract, 150) }}
-</td>
+                                           <td class="">{{ $archive->title }}</td>
                                             <td>{{ $archive->year }}</td>
                                             <td>{{ $archive->program->name ?? 'N/A' }}</td>
                                             <td>
@@ -297,28 +286,33 @@
                                                     </form>
 
                                                     <!-- View Button -->
-                                                    <a href="#" class="btn btn-sm btn-info view-archive"
-                                                        data-id="{{ $archive->id }}" title="View">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
+                                                        <a href="{{ route($role . '.archive.details', $archive->id) }}"
+                                                            class="btn btn-sm btn-info" title="View">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+
+
+                                                   
+
+                                        
 
                                                     <!-- Edit Button -->
-                                                    <a href="javascript:void(0)"
-                                                        class="btn btn-sm btn-primary editArchiveBtn" title="Edit"
-                                                        data-id="{{ $archive->id }}">
-                                                        <i class="fa fa-edit fs-6"></i>
-                                                    </a>
+                                                        <a href="{{ route($role . '.archive.manage.edit', $archive->id) }}"
+                                                            class="btn btn-sm btn-primary" title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+
 
                                                     <!-- Delete Button -->
-                                                    <form
-                                                        action="{{ route('staff.archives.manage.destroy', $archive->id) }}"
-                                                        method="POST" class="d-inline deleteForm">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-sm btn-danger deleteBtn"
-                                                            title="Delete">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                    <form id="delete-form-{{ $archive->id }}"
+                                                            action="{{ route($role . '.archive.manage.destroy', $archive->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                                                title="Delete" data-id="{{ $archive->id }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -338,294 +332,60 @@
 @endsection
 
 
-@push('archive-script')
+@push('script')
     <script>
         $(document).ready(function() {
-            $('#basic-datatables').DataTable({
-                "pageLength": 50,
-            });
-
+            $('#basic-datatables').DataTable({});
         });
 
-        $('#dateyear').datetimepicker({
-            format: 'YYYY',
-            viewMode: 'years'
-        }).on('dp.show', function(e) {
-            // force focus back to years panel
-            var picker = $(this).data("DateTimePicker");
-            picker.viewMode("years");
-        });
-
-        $('#multi-filter-select').DataTable({
-            "pageLength": 50,
-            initComplete: function() {
-                this.api().columns().every(function() {
-                    var column = this;
-                    var select = $('<select class="form-select"><option value=""></option></select>')
-                        .appendTo($(column.footer()).empty())
-                        .on('change', function() {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search(val ? '^' + val + '$' : '', true, false)
-                                .draw();
-                        });
-
-                    column.data().unique().sort().each(function(d, j) {
-                        select.append('<option value="' + d + '">' + d + '</option>')
-                    });
-                });
-            }
-        });
-    </script>
-
-    <script>
-        $(document).on('click', '.view-archive', function(e) {
-            e.preventDefault();
-
-            let archiveId = $(this).data('id');
-            let url = "{{ url('staff/archives') }}/" + archiveId;
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(data) {
-                    let pdfViewer;
-
-                    // Detect if mobile
-                    if (/Mobi|Android/i.test(navigator.userAgent)) {
-                        pdfViewer = `
-                    <div class="text-center my-3">
-                        <p class="mb-2">PDF preview is not supported on mobile.</p>
-                        <a href="${data.file_path}" class="btn btn-primary" target="_blank">
-                            Open PDF
-                        </a>
-                    </div>
-                `;
-                    } else {
-                        pdfViewer = `
-                    <div class="ratio ratio-16x9 mt-3">
-                        <iframe src="${data.file_path}" style="border:0;" allowfullscreen></iframe>
-                    </div>
-                `;
-                    }
-
-                    // Modal content: details on top, PDF below
-                    let content = `
-                <!-- Thesis Details -->
-                <div class="mb-4">
-                <h4 class="fw-bold mb-2 text-center">${data.title}</h4>
-                ${data.year ? `<p><strong>Year:</strong> ${data.year}</p>` : ''}
-                ${data.program ? `<p><strong>Program:</strong> ${data.program}</p>` : ''}
-                ${data.abstract ? `<p style="text-align: justify;"><strong>Abstract:</strong><br>${data.abstract}</p>` : ''}
-                ${data.authors ? `<p><strong>Authors:</strong> ${data.authors}</p>` : ''}
-                </div>
-
-                <!-- PDF Preview -->
-                ${pdfViewer}
-            `;
-
-                    $('#viewArchive .modal-body').html(content);
-                    $('#downloadPdf').attr('href', data.file_path);
-                    $('#viewArchive').modal('show');
-                },
-                error: function() {
-                    alert('Archive not found.');
-                }
-            });
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const modalElement = document.getElementById('addRowModal');
-            const modal = new bootstrap.Modal(modalElement);
-            const form = modalElement.querySelector('form');
-            const fileInput = document.getElementById('file_path');
-            const currentFileDiv = document.getElementById('currentFile');
-
-            // ✅ Reset form when opening "Add New Archive"
-            modalElement.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget; // the button that opened the modal
-                if (!button.classList.contains('editArchiveBtn')) {
-                    // Clear form fields
-                    form.reset();
-
-                    // Reset archive_code if Laravel generated one
-                    const archiveCodeField = document.getElementById('archive_code');
-                    if (archiveCodeField && archiveCodeField.hasAttribute('value')) {
-                        archiveCodeField.value = archiveCodeField.getAttribute('value');
-                    }
-
-                    // Clear Select2 (keywords)
-                    const keywordSelect = document.getElementById('multiple');
-                    if (keywordSelect) {
-                        [...keywordSelect.options].forEach(option => option.selected = false);
-                        $('#multiple').val(null).trigger('change');
-                    }
-
-                    // Reset file input (since .reset() doesn’t always clear in all browsers)
-                    fileInput.value = "";
-                    fileInput.setAttribute("required", "required"); // required when adding
-                    if (currentFileDiv) currentFileDiv.innerHTML = "";
-
-                    // Reset form action & button
-                    form.action = `{{ route('staff.archive.manage.store') }}`;
-                    form.querySelector('input[name="_method"]')?.remove();
-                    form.querySelector('#addRowButton').textContent = "Add";
-                }
-            });
-
-            // ✅ Edit button logic
-            document.querySelectorAll('.editArchiveBtn').forEach(button => {
-                button.addEventListener('click', function() {
-                    let id = this.dataset.id;
-
-                    fetch(`/staff/archives/${id}/edit`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Fill fields
-                            document.getElementById('archive_code').value = data.archive_code;
-                            document.getElementById('title').value = data.title;
-                            document.getElementById('abstract').value = data.abstract;
-                            document.getElementById('authors').value = data.authors;
-                            document.getElementById('dateyear').value = data.year;
-                            document.getElementById('program').value = data.program_id;
-                            document.getElementById('category').value = data.category;
-
-                            // ✅ keywords
-                            const keywordSelect = document.getElementById('multiple');
-                            [...keywordSelect.options].forEach(option => option.selected =
-                                false);
-                            if (data.keywords) {
-                                data.keywords.forEach(keyword => {
-                                    let option = keywordSelect.querySelector(
-                                        `option[value="${keyword.id}"]`);
-                                    if (option) option.selected = true;
-                                });
-                            }
-                            $('#multiple').trigger('change');
-
-                            // ✅ File display
-                            fileInput.value = "";
-                            fileInput.removeAttribute("required"); // not required when editing
-                            if (currentFileDiv) {
-                                if (data.file_path) {
-                                    currentFileDiv.innerHTML = `
-                                    <p>Current File:
-                                        <a href="/storage/${data.file_path}" target="_blank">View PDF</a>
-                                    </p>`;
-                                } else {
-                                    currentFileDiv.innerHTML =
-                                        `<p class="text-muted">No file uploaded yet.</p>`;
-                                }
-                            }
-
-                            // ✅ Update form action for Edit
-                            form.action = `/staff/archives/${id}`;
-                            form.querySelector('input[name="_method"]')?.remove();
-                            form.insertAdjacentHTML('beforeend',
-                                '<input type="hidden" name="_method" value="PUT">');
-                            form.querySelector('#addRowButton').textContent = "Update";
-
-                            modal.show();
-                        });
-                });
-            });
-        });
-    </script>
-
-
-    <script>
-        document.querySelectorAll('.deleteBtn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                let form = this.closest('form');
-                let url = form.action;
-
-                swal({
-                    title: 'Are you sure?',
-                    text: "This archive will be permanently deleted!",
-                    icon: 'warning',
-                    buttons: {
-                        cancel: {
-                            text: 'Cancel',
-                            visible: true,
-                            className: 'btn btn-danger'
-                        },
-                        confirm: {
-                            text: 'Yes, delete it!',
-                            className: 'btn btn-success'
-                        }
-                    }
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        fetch(url, {
-                                method: "POST",
-                                body: new FormData(form)
-                            })
-                            .then(res => res.ok ? res : Promise.reject(res))
-                            .then(() => {
-                                swal("Deleted!", "Archive has been deleted.", {
-                                    icon: "success",
-                                    buttons: {
-                                        confirm: {
-                                            className: 'btn btn-success'
-                                        }
-                                    }
-                                }).then(() => location.reload()); // reload table
-                            })
-                            .catch(() => {
-                                swal("Error!", "Failed to delete archive.", {
-                                    icon: "error",
-                                    buttons: {
-                                        confirm: {
-                                            className: 'btn btn-danger'
-                                        }
-                                    }
-                                });
-                            });
-                    }
-                });
-            });
-        });
-    </script>
-
-
-    @if (session('success'))
-        <script>
-            swal("Success!", "{{ session('success') }}", {
+        @if (session('success'))
+            swal("Good job!", "{{ session('success') }}", {
                 icon: "success",
                 buttons: {
                     confirm: {
                         className: 'btn btn-success'
                     }
-                }
+                },
             });
-        </script>
-    @endif
+        @endif
 
-    @if (session('error'))
-        <script>
-            swal("Error!", "{{ session('error') }}", {
+        @if (session('error'))
+            swal("Good job!", "{{ session('success') }}", {
                 icon: "error",
                 buttons: {
                     confirm: {
                         className: 'btn btn-danger'
                     }
+                },
+            });
+        @endif
+
+
+        $(document).on('click', '.btn-delete', function(e) {
+            e.preventDefault();
+
+            let archiveId = $(this).data('id');
+
+
+            swal({
+                title: "Are you sure you want to delete this program?",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        visible: true,
+                        className: "btn btn-danger"
+                    },
+                    confirm: {
+                        text: "Yes, delete!",
+                        className: "btn btn-success"
+                    }
+                }
+            }).then((willDelete) => {
+                if (willDelete) {
+                    document.getElementById(`delete-form-${archiveId}`).submit();
                 }
             });
-        </script>
-    @endif
-
-
-    <script>
-        $('#multiple').select2({
-            theme: "bootstrap",
-            dropdownParent: $('#addRowModal')
         });
     </script>
-
 @endpush

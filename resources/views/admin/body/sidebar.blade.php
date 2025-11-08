@@ -1,10 +1,16 @@
 @php
     $adminActiveArchive = request()->routeIs(['admin.archive']);
-    $adminActivePatron = request()->routeIs(['admin.patron']);
     $adminActiveProgram = request()->routeIs(['admin.program']);
-    $adminActiveUser = request()->routeIs(['admin.user']);
     $adminActiveDashboard = request()->routeIs('admin.dashboard');
     $adminActiveKeyword = request()->routeIs(['admin.keyword']);
+    $adminActiveReport = request()->routeIs(['admin.report']);
+    $adminActiveAnnouncement = request()->routeIs(['admin.announcement']);
+    $adminProfileActive = request()->routeIs(['admin.profile']);
+
+    $adminActiveUser = request()->routeIs([
+        'admin.user',
+        'admin.patron',
+    ]);
 @endphp
 
 <div class="sidebar" data-background-color="dark">
@@ -12,11 +18,11 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
 
-            <a href="" class="logo">
+            {{-- <a href="" class="logo">
 
                 <img src="{{ asset('assets/img/kaiadmin/logo_light.png') }}" alt="navbar brand" class="navbar-brand"
                     height="20">
-            </a>
+            </a> --}}
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
                     <i class="gg-menu-right"></i>
@@ -49,96 +55,67 @@
                     <h4 class="text-section">Components</h4>
                 </li>
 
-                <li class="nav-item {{ $adminActiveArchive ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#archives"
-                        aria-expanded="{{ $adminActiveArchive ? 'true' : 'false' }}">
-                        <i class="fas fa-archive"></i>
-                        <p>Archives</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse {{ $adminActiveArchive ? 'show' : '' }}" id="archives">
-                        <ul class="nav nav-collapse">
-                            <li class="{{ $adminActiveArchive ? 'active' : '' }}">
-                                <a href="{{ route('admin.archive') }}">
-                                    <span class="sub-item">Archive List</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
 
-                <li class="nav-item {{ $adminActivePatron ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#patrons"
-                        aria-expanded="{{ $adminActivePatron ? 'true' : 'false' }}">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <p>Patrons</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse {{ $adminActivePatron ? 'show' : '' }}" id="patrons">
-                        <ul class="nav nav-collapse">
-                            <li class="{{ $adminActivePatron ? 'active' : '' }}">
-                                <a href="{{ route('admin.patron') }}">
-                                    <span class="sub-item">Patron List</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                 <li class="nav-item {{ $adminActiveKeyword ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#keyword"
-                        aria-expanded="{{ $adminActiveKeyword ? 'true' : 'false' }}">
-                        <i class="fas fa-key"></i>
-                        <p>Keywords</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse {{ $adminActiveKeyword ? 'show' : '' }}" id="keyword">
-                        <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('admin.keyword') ? 'active' : '' }}">
-                                <a href="{{ route('admin.keyword') }}">
-                                    <span class="sub-item">Keyword List</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item {{ $adminActiveProgram ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#programs"
-                        aria-expanded="{{ $adminActiveProgram ? 'true' : 'false' }}">
-                        <i class="fas fa-laptop"></i>
-                        <p>Programs</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse {{ $adminActiveProgram ? 'show' : '' }}" id="programs">
-                        <ul class="nav nav-collapse">
-                            <li class="{{ $adminActiveProgram ? 'active' : '' }}">
-                                <a href="{{ route('admin.program') }}">
-                                    <span class="sub-item">Program List</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item {{ $adminActiveUser ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#users"
-                        aria-expanded="{{ $adminActiveUser ? 'true' : 'false' }}">
+                 <li class="nav-item {{ $adminActiveUser ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#users" aria-expanded="{{ $adminActiveUser ? 'true' : 'false' }}">
                         <i class="fas fa-user-alt"></i>
-                        <p>User Management</p>
+                        <p>Users</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse {{ $adminActiveUser ? 'show' : '' }}" id="users">
                         <ul class="nav nav-collapse">
-                            <li class="{{ $adminActiveUser ? 'active' : '' }}">
-                                <a href="{{ route('admin.user') }}">
-                                    <span class="sub-item">User Role</span>
+                            <li class="{{ request()->routeIs('admin.patron') ? 'active' : '' }}">
+                                <a href="{{ route('admin.patron') }}">
+                                    <span class="sub-item">Manage Patrons</span>
                                 </a>
                             </li>
+                            <li class="{{ request()->routeIs('admin.user') ? 'active' : '' }}">
+                                <a href="{{ route('admin.user') }}">
+                                    <span class="sub-item">User Roles</span>
+                                </a>
+                            </li>
+
                         </ul>
                     </div>
                 </li>
+
+
+                  <li class="nav-item {{ $adminActiveArchive ? 'active' : '' }}">
+                    <a href="{{ route('admin.archive') }}">
+                        <i class="fas fa-archive"></i>
+                        <p>Archives</p>
+                    </a>
+                </li>
+
+
+                  
+
+                <li class="nav-item {{ $adminActiveKeyword ? 'active' : '' }}">
+                    <a href="{{ route('admin.keyword') }}">
+                        <i class="fas fa-at"></i>
+                        <p>Keywords</p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item {{ $adminActiveProgram ? 'active' : '' }}">
+                    <a href="{{ route('admin.program') }}">
+                        <i class="fab fa-discourse"></i>
+                        <p>Programs</p>
+                    </a>
+                </li>
+
+            
+
+
+              
+
+
+
+
+             
+
+
 
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
@@ -147,13 +124,30 @@
                     <h4 class="text-section">Maintenance</h4>
                 </li>
 
-        
-                <li class="nav-item">
-                    <a href="#">
-                        <i class="fas fa-cogs"></i>
-                        <p>Settings</p>
+                  <li class="nav-item {{ $adminActiveAnnouncement ? 'active' : '' }}">
+                    <a href="{{ route('admin.announcement') }}">
+                        <i class="fas fa-paper-plane"></i>
+                        <p>Announcements</p>
                     </a>
                 </li>
+                   <li class="nav-item {{ $adminActiveReport ? 'active' : '' }}">
+                    <a href="{{ route('admin.report') }}">
+                        <i class="fas fa-paperclip"></i>
+                        <p>Reports</p>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ $adminProfileActive ? 'active' : '' }}">
+                    <a href="{{ route('admin.profile') }}">
+                        <i class="fas fa-user-shield"></i>
+                        <p>Profile</p>
+                    </a>
+                </li>
+
+
+                
+
+
 
             </ul>
         </div>

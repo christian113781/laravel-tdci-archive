@@ -1,29 +1,16 @@
 @extends('staff.staff_dashboard')
 
-@section('profile')
+@section('pages')
     <div class="page-inner">
 
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Profile</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Tables</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Manage Profile</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage</li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                </ol>
+            </nav>
         </div>
 
         <div class="row">
@@ -33,7 +20,7 @@
             <div class="card-title">Manage User</div>
         </div>
 
-        <form method="POST" action="{{ route('staff.profile.update') }}" enctype="multipart/form-data" id="exampleValidation">
+        <form method="POST" action="{{ route('staff.profile.update') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="card-body">
@@ -113,7 +100,7 @@
                                  @if ($user->avatar)
                                      src="{{ asset('storage/' . $user->avatar) }}"
                                  @else
-                                     src="{{ asset('default.png') }}"
+                                     src="{{ asset('assets/img/profile.jpg') }}"
                                  @endif
                                  alt="preview"
                             >
@@ -150,7 +137,7 @@
         </div>
     </div>
 @endsection
-@push('profile-script')
+@push('script')
     <script>
         @if (session('success'))
             swal({
@@ -179,38 +166,5 @@
                 }
             });
         @endif
-    </script>
-
-
-    <script>
-        $("#exampleValidation").validate({
-            validClass: "success",
-            rules: {
-                gender: {
-                    required: true
-                },
-                confirmpassword: {
-                    equalTo: "#password"
-                },
-                birth: {
-                    date: true
-                },
-                uploadImg: {
-                    extension: "jpg|jpeg|png" // ✅ instead of "required", only allow specific file types
-                }
-            },
-            messages: {
-                gender: "Please select a gender",
-                confirmpassword: "Passwords do not match",
-                birth: "Please enter a valid date",
-                uploadImg: "Only JPG, JPEG, or PNG files are allowed"
-            },
-            highlight: function(element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            },
-            success: function(element) {
-                $(element).closest('.form-group').removeClass('has-error');
-            }
-        });
     </script>
 @endpush

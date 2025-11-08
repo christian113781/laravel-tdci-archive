@@ -1,6 +1,6 @@
 @extends('admin.admin_dashboard')
 
-@section('archive')
+@section('pages')
     <div class="page-inner">
         <div class="page-header">
             <h3 class="fw-bold mb-3">Archives</h3>
@@ -43,7 +43,7 @@
                                         </option>
                                         <option value="4" {{ request('field') == 4 ? 'selected' : '' }}>Year</option>
                                         <option value="5" {{ request('field') == 5 ? 'selected' : '' }}>Program</option>
-                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Abstract
+                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Subject
                                         </option>
                                     </select>
                                 </div>
@@ -100,7 +100,7 @@
                                 <thead>
                                     <tr>
                                         <th>TITLE</th>
-                                        <th>ABSTRACT</th>
+                                        <th>SUBJECT</th>
                                         <th>AUTHOR</th>
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
@@ -113,7 +113,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>TITLE</th>
-                                        <th>ABSTRACT</th>
+                                        <th>SUBJECT</th>
                                         <th>AUTHOR</th>
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
@@ -127,7 +127,7 @@
                                     @foreach ($archives as $archive)
                                         <tr>
                                             <td style="text-align: justify;">{{ Str::limit($archive->title, 120) }}</td>
-                                            <td style="text-align: justify;">{{ Str::limit($archive->abstract, 120) }}</td>
+                                            <td style="text-align: justify;">{{ Str::limit($archive->subject, 120) }}</td>
                                             <td>{{ $archive->authors }}</td>
                                             <td>{{ $archive->year }}</td>
                                             <td>{{ $archive->program->name ?? 'N/A' }}</td>
@@ -176,7 +176,7 @@
         </div>
     </div>
 @endsection
-@push('archive-script')
+@push('script')
     <script>
         $('#dateyear').datetimepicker({
             format: 'YYYY',
@@ -277,12 +277,12 @@
 <div class="mb-4 px-3">
     <h4 class="fw-bold mb-3 text-center">${data.title}</h4>
 
-     ${data.abstract ? `
+     ${data.subject ? `
             <div class="mb-3 d-flex justify-content-between align-items-start">
-                <p class="mb-0"><strong>Abstract:</strong></p>
+                <p class="mb-0"><strong>Subject:</strong></p>
                 ${data.year ? `<p class="mb-0"><strong>Year:</strong> ${data.year}</p>` : ''}
             </div>
-            <p style="text-align: justify;">${data.abstract}</p>
+            <p style="text-align: justify;">${data.subject}</p>
         ` : ''}
 
     <div class="row mb-3">

@@ -1,35 +1,24 @@
 @extends('staff.staff_dashboard')
 
-@section('archive-request')
+@section('pages')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Archives</h3>
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Manage</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Mange Request</a>
-                </li>
-            </ul>
+            <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item active" aria-current="page">Archive</li>
+    <li class="breadcrumb-item active" aria-current="page">Request</li>
+  </ol>
+</nav>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
+
+                    <div class="card-header">
+                        <h4 class="card-title">Archive Request</h4>
+                    </div>
                     <div class="card-body">
-
-
                         <div class="table-responsive">
                             <table id="basic-datatables" class="display table table-striped table-hover">
                                 <thead>
@@ -37,23 +26,12 @@
                                         <th>NAME</th>
                                         <th>EMAIL</th>
                                         <th>TITLE</th>
-                                        <th>YEAR</th>
                                         <th>REQUEST DATE</th>
                                         <th>STATUS</th>
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>NAME</th>
-                                        <th>EMAIL</th>
-                                        <th>TITLE</th>
-                                        <th>YEAR</th>
-                                        <th>REQUEST DATE</th>
-                                        <th>STATUS</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </tfoot>
+                                
                                 <tbody>
                                     @foreach ($requests as $req)
                                         <tr>
@@ -64,7 +42,7 @@
                                             <td style="text-align: left;">
                                                 {{ $req->archive->title }}
                                             </td>
-                                            <td>{{ $req->archive->year }}</td>
+                                            
                                             <td>{{ $req->created_at->format('Y-m-d') }}</td>
                                             <td>
                                                 @if ($req->status === 'pending')
@@ -117,16 +95,44 @@
         </div>
     </div>
 @endsection
-@push('archive-script')
+@push('script')
     <script>
         $(document).ready(function() {
-            $('#basic-datatables').DataTable({});
+            $('#basic-datatables').DataTable({
+                
+            });
+            
 
         });
 
 
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".approve-btn").forEach(function(button) {
+                button.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    let url = this.getAttribute("href");
+
+                    // Show SweetAlert loader
+                    swal({
+                        title: "Processing...",
+                        text: "Sending approval email...",
+                        buttons: false,
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        icon: "warning"
+                    });
+
+                    // Redirect after a short delay
+                    setTimeout(function() {
+                        window.location.href = url;
+                    }, 800);
+                });
+            });
+        });
+
+
+         document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".reject-btn").forEach(function(button) {
                 button.addEventListener("click", function(e) {
                     e.preventDefault();
                     let url = this.getAttribute("href");

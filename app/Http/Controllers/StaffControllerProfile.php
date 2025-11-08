@@ -46,7 +46,7 @@ class StaffControllerProfile extends Controller
                 // generate random file name
                 $randomName = Str::random(40) . '.' . $extension;
 
-                $folder = 'uploadImg';  // this will be under storage/app/public/uploadImg
+                $folder = 'avatar';  // this will be under storage/app/public/uploadImg
 
                 // Delete old avatar if exists
                 if ($user->avatar) {
@@ -69,7 +69,7 @@ class StaffControllerProfile extends Controller
             return redirect()->back()->with('success', 'Profile updated successfully!');
         } catch (\Exception $e) {
             \Log::error('Profile update failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+            return redirect()->back()->with('error', 'Something went wrong. Please Fill Correctly.');
         }
     }
 }
