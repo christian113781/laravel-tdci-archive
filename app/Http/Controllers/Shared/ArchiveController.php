@@ -199,7 +199,7 @@ class ArchiveController extends Controller
             abort(403);
         }
 
-        $maxDownloads = 2;
+        $maxDownloads = 15;
 
         if (strtolower($user->role) === 'patron') {
 
