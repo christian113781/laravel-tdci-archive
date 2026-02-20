@@ -192,8 +192,8 @@
                         <div class="file-body bg-white">
                             <div class="file-icon">
                                 @if (!empty($archive->thesis_file))
-                                    <a
-                                        href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'thesis']) }}">
+                                    <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'thesis']) }}"
+                                        target="_blank">
                                         <i class="fas fa-file-pdf text-danger"></i>
                                     </a>
                                 @else
