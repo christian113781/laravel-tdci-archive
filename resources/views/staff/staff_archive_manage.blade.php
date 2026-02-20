@@ -11,12 +11,12 @@
     <div class="page-inner">
         <div class="page-header">
             <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page">Home</li>
-    <li class="breadcrumb-item active" aria-current="page">Archive</li>
-    <li class="breadcrumb-item active" aria-current="page">Manage</li>
-  </ol>
-</nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Archive</li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage</li>
+                </ol>
+            </nav>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -236,7 +236,7 @@
                                     <tr>
                                         <th>CODE</th>
                                         <th>TITLE</th>
-                                       
+
                                         <th>YEAR</th>
                                         <th>PROGRAM</th>
                                         <th>CATEGORY</th>
@@ -245,12 +245,12 @@
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
-                               
+
                                 <tbody>
                                     @foreach ($archives as $archive)
                                         <tr>
                                             <td>{{ $archive->archive_code }}</td>
-                                           <td class="">{{ $archive->title }}</td>
+                                            <td class="">{{ $archive->title }}</td>
                                             <td>{{ $archive->year }}</td>
                                             <td>{{ $archive->program->name ?? 'N/A' }}</td>
                                             <td>
@@ -286,33 +286,33 @@
                                                     </form>
 
                                                     <!-- View Button -->
-                                                        <a href="{{ route($role . '.archive.details', $archive->id) }}"
-                                                            class="btn btn-sm btn-info" title="View">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
+                                                    <a href="{{ route($role . '.archive.details', $archive->id) }}"
+                                                        class="btn btn-sm btn-info" title="View">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
 
 
-                                                   
 
-                                        
+
+
 
                                                     <!-- Edit Button -->
-                                                        <a href="{{ route($role . '.archive.manage.edit', $archive->id) }}"
-                                                            class="btn btn-sm btn-primary" title="Edit">
-                                                            <i class="fa fa-edit"></i>
-                                                        </a>
+                                                    <a href="{{ route($role . '.archive.manage.edit', $archive->id) }}"
+                                                        class="btn btn-sm btn-primary" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
 
 
                                                     <!-- Delete Button -->
                                                     <form id="delete-form-{{ $archive->id }}"
-                                                            action="{{ route($role . '.archive.manage.destroy', $archive->id) }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-sm btn-danger btn-delete"
-                                                                title="Delete" data-id="{{ $archive->id }}">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
+                                                        action="{{ route($role . '.archive.manage.destroy', $archive->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                                            title="Delete" data-id="{{ $archive->id }}">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -368,7 +368,7 @@
 
 
             swal({
-                title: "Are you sure you want to delete this program?",
+                title: "Are you sure you want to delete this archive?",
                 icon: "warning",
                 buttons: {
                     cancel: {

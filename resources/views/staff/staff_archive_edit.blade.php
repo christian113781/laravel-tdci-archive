@@ -21,7 +21,7 @@
                         <div class="card-header">
                             <h6 class="card-title">Thesis Details</h6>
                         </div>
-                        <div class="card-body" >
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group form-show-validation">
@@ -172,7 +172,7 @@
                                             </div>
                                         @endif
                                         <input type="file" class="form-control-file" id="thesis_file"
-                                            name="thesis_file" accept="application/pdf"
+                                            name="thesis_file[]" accept="image/*" multiple
                                             {{ empty($archive->thesis_file) ? 'required' : '' }} />
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                         @endif
 
                                         <input type="file" class="form-control-file" id="tables_file"
-                                            name="tables_file" accept="application/pdf"
+                                            name="tables_file[]" multiple accept="image/*"
                                             {{ empty($archive->tables_file) ? '' : '' }} />
                                     </div>
                                 </div>
@@ -219,7 +219,7 @@
                                         @endif
 
                                         <input type="file" class="form-control-file" id="figures_file"
-                                            name="figures_file" accept="application/pdf"
+                                            name="figures_file[]" multiple accept="image/*"
                                             {{ empty($archive->figures_file) ? '' : '' }} />
                                     </div>
                                 </div>
@@ -242,7 +242,7 @@
                                         @endif
 
                                         <input type="file" class="form-control-file" id="recommendation_file"
-                                            name="recommendation_file" accept="application/pdf"
+                                            name="recommendation_file[]" accept="image/*" multiple
                                             {{ empty($archive->recommendation_file) ? '' : '' }} />
                                     </div>
                                 </div>

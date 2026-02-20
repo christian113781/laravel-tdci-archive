@@ -4,12 +4,12 @@
     <div class="page-inner">
         <div class="page-header">
             <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page">Home</li>
-     <li class="breadcrumb-item active" aria-current="page">Archive</li>
-      <li class="breadcrumb-item active" aria-current="page">Create</li>
-  </ol>
-</nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Archive</li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                </ol>
+            </nav>
         </div>
 
         <form action="{{ route('staff.archive.manage.store') }}" method="POST" enctype="multipart/form-data">
@@ -25,8 +25,8 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-show-validation">
                                         {{-- <label for="archive_code">Archive Code</label> --}}
-                                        <input type="text" class="form-control input-square" id="archive_code" name="archive_code"
-                                            value="{{ $nextCode }}" readonly />
+                                        <input type="text" class="form-control input-square" id="archive_code"
+                                            name="archive_code" value="{{ $nextCode }}" readonly />
                                     </div>
                                 </div>
 
@@ -34,8 +34,8 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         {{-- <label for="archive_program">Program</label> --}}
-                                        <select class="form-select form-control input-square" id="archive_program" name="archive_program"
-                                            required>
+                                        <select class="form-select form-control input-square" id="archive_program"
+                                            name="archive_program" required>
                                             <option value="" disabled selected>— Select a Program —</option>
                                             @forelse ($programs as $dept)
                                                 <option value="{{ $dept->id }}"
@@ -55,8 +55,8 @@
                                     <div class="form-group">
                                         {{-- <label>Year</label> --}}
                                         <div class="input-group">
-                                            <input type="text" class="form-control input-square" id="archive_year" name="archive_year"
-                                                value="{{ now()->year }}" required>
+                                            <input type="text" class="form-control input-square" id="archive_year"
+                                                name="archive_year" value="{{ now()->year }}" required>
                                             <span class="input-group-text">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
@@ -120,7 +120,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="archive_title">Title:</label>
-                                        <textarea class="form-control input-square" id="archive_title" name="archive_title" placeholder="" rows="3" required></textarea>
+                                        <textarea class="form-control input-square" id="archive_title" name="archive_title" placeholder="" rows="3"
+                                            required></textarea>
                                     </div>
                                 </div>
 
@@ -133,7 +134,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="archive_subject">Subject:</label>
-                                        <textarea class="form-control input-square" id="archive_subject" name="archive_subject"  rows="5" required></textarea>
+                                        <textarea class="form-control input-square" id="archive_subject" name="archive_subject" rows="5" required></textarea>
                                     </div>
                                 </div>
 
@@ -141,7 +142,7 @@
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="archive_citation">Recommend Citation:</label>
-                                        <textarea class="form-control" id="archive_citation" name="archive_citation"  rows="5" required></textarea>
+                                        <textarea class="form-control" id="archive_citation" name="archive_citation" rows="5" required></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +165,7 @@
                                         <div id="currentFile" class="mb-2"></div>
 
                                         <input type="file" class="form-control-file" id="thesis_file"
-                                            name="thesis_file" accept="application/pdf" required />
+                                            name="thesis_file[]" accept="image/*" multiple required />
 
                                     </div>
                                 </div>
@@ -176,7 +177,7 @@
                                         <div id="currentFile" class="mb-2"></div>
 
                                         <input type="file" class="form-control-file" id="tables_file"
-                                            name="tables_file" accept="application/pdf" />
+                                            name="tables_file[]" multiple accept="image/*" />
 
                                     </div>
                                 </div>
@@ -189,7 +190,7 @@
                                         <div id="currentFile" class="mb-2"></div>
 
                                         <input type="file" class="form-control-file" id="figures_file"
-                                            name="figures_file" accept="application/pdf" />
+                                            name="figures_file[]" multiple accept="image/*" />
 
                                     </div>
                                 </div>
@@ -200,7 +201,7 @@
                                         <div id="currentFile" class="mb-2"></div>
 
                                         <input type="file" class="form-control-file" id="recommendation_file"
-                                            name="recommendation_file" accept="application/pdf" />
+                                            name="recommendation_file[]" multiple accept="image/*" />
 
                                     </div>
                                 </div>
@@ -208,7 +209,7 @@
 
                                 <div class="col-md-12 mt-2">
                                     <input class="btn btn-primary" type="submit" value="Submit">
-                                     <button type="button" class="btn btn-danger"
+                                    <button type="button" class="btn btn-danger"
                                         onclick="window.location='{{ route('staff.archive.manage') }}'">
                                         Cancel
                                     </button>
@@ -244,10 +245,6 @@
             placeholder: $('#multiple').data('placeholder'),
             allowClear: true
         });
-
-
-
-        
     </script>
 
 

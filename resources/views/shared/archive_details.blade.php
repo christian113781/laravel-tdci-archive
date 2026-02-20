@@ -77,8 +77,14 @@
 </style>
 
 @php
+    use Milon\Barcode\DNS1D;
     $status = $archive->status ?? 'UNKNOWN';
     $statusClass = strtolower($status);
+
+    // Generate barcode base64
+    $d = new DNS1D();
+    $d->setStorPath(storage_path('app/public/barcodes/'));
+    $barcodeBase64 = $d->getBarcodePNG($archive->archive_code, 'C128', 3, 50);
 @endphp
 
 @extends($layout)
@@ -104,10 +110,31 @@
                 </a>
             </div>
 
-            <div class="col-md-12 text-left mb-3 mt-2 p-1 ms-2">
+            @session('error')
+                <div class="col-md-12">
+                    <div class="alert alert-danger alert-dismissible fade show  mx-auto" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="alert"></button>
+                    </div>
+                </div>
+            @endsession
+
+
+            <div class="d-flex justify-content-between align-items-center mb-3 mt-2 ">
+
                 <div class="status-box {{ $statusClass }}">
                     <span>Status: </span>
                     <span>{{ $status }}</span>
+                </div>
+
+
+                <div>
+                    @if (auth()->user()->role !== 'patron')
+                        <a href="data:image/png;base64,{{ $barcode }}"
+                            download="{{ $archive->archive_code }}_barcode.png" class="btn btn-black">
+                            Download Barcode
+                        </a>
+                    @endif
                 </div>
             </div>
 
@@ -136,7 +163,7 @@
                     </tr>
                     <tr>
                         <th>Citation</th>
-                             <td>{{ $archive->citation ?? 'No Citaion' }}</td>
+                        <td>{{ $archive->citation ?? 'No Citaion' }}</td>
 
                     </tr>
 
@@ -164,9 +191,14 @@
                         </div>
                         <div class="file-body bg-white">
                             <div class="file-icon">
-                                <a href="{{ asset('storage/' . $archive->thesis_file) }}" target="_blank" rel="noopener">
-                                    <i class="fas fa-file-pdf text-danger"></i>
-                                </a>
+                                @if (!empty($archive->thesis_file))
+                                    <a
+                                        href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'thesis']) }}">
+                                        <i class="fas fa-file-pdf text-danger"></i>
+                                    </a>
+                                @else
+                                    <i class="fas fa-file-pdf text-muted"></i>
+                                @endif
                             </div>
                             <div class="file-caption">
                                 {{ $thesisSize }}
@@ -182,8 +214,8 @@
                         <div class="file-body bg-white">
                             <div class="file-icon">
                                 @if (!empty($archive->tables_file))
-                                    <a href="{{ asset('storage/' . $archive->tables_file) }}" target="_blank"
-                                        rel="noopener">
+                                    <a
+                                        href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'tables']) }}">
                                         <i class="fas fa-file-pdf text-danger"></i>
                                     </a>
                                 @else
@@ -204,8 +236,8 @@
                         <div class="file-body bg-white">
                             <div class="file-icon">
                                 @if (!empty($archive->figures_file))
-                                    <a href="{{ asset('storage/' . $archive->figures_file) }}" target="_blank"
-                                        rel="noopener">
+                                    <a
+                                        href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'figures']) }}">
                                         <i class="fas fa-file-pdf text-danger"></i>
                                     </a>
                                 @else
@@ -232,13 +264,13 @@
                                 <span><i>Keywords </i>:</span>
                                 <span class="txt-info">
                                     <td>
-                            @if ($archive->keywords->isEmpty())
-                                n/a
-                            @else
-                                {{ $archive->keywords->pluck('name')->join(', ') }}
-                            @endif
-                        </td>
-                                   
+                                        @if ($archive->keywords->isEmpty())
+                                            n/a
+                                        @else
+                                            {{ $archive->keywords->pluck('name')->join(', ') }}
+                                        @endif
+                                    </td>
+
                                 </span>
                             </div>
                             <div>&nbsp;</div>
@@ -246,13 +278,13 @@
                                 <span><strong>Access Permission : </strong></span>
                                 <span class="">
                                     <span class="txt-info">
-                                       
-                                            @if ($archive->category === 'a')
-                                                General
-                                            @else
-                                                Limited Access
-                                            @endif
-                                       
+
+                                        @if ($archive->category === 'a')
+                                            General
+                                        @else
+                                            Limited Access
+                                        @endif
+
                                     </span>
                                 </span>
                             </div>
@@ -297,3 +329,14 @@
 
     </div>
 @endsection
+
+@push('script')
+    <script>
+        setTimeout(function() {
+            document.querySelectorAll('.alert-danger').forEach(function(alert) {
+                let bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 2000);
+    </script>
+@endpush
