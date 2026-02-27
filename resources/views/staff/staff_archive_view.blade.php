@@ -128,7 +128,7 @@
                 <div class="row mb-5">
                     <div class="file-attach p-10 col-md-12 text-center mb-4">
                         <div class="file-title bg-white">
-                            Thesis File
+                            Title Page
                         </div>
                         <div class="file-body bg-white">
                             <div class="file-icon">
@@ -192,10 +192,10 @@
                     </div>
 
 
-                    
 
 
-                    
+
+
                 </div>
             </div>
 

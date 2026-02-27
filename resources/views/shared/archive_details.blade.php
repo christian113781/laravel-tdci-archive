@@ -85,6 +85,14 @@
     $d = new DNS1D();
     $d->setStorPath(storage_path('app/public/barcodes/'));
     $barcodeBase64 = $d->getBarcodePNG($archive->archive_code, 'C128', 3, 50);
+
+    $routes = [
+        'patron' => 'patron.archive',
+        'staff' => 'staff.archive.manage',
+        'admin' => 'admin.archive',
+    ];
+
+    $role = auth()->user()->role;
 @endphp
 
 @extends($layout)
@@ -104,9 +112,8 @@
         <div class="row">
 
             <div class="col-md-12 mb-3 d-flex justify-content-between">
-                <a href="{{ url()->previous() }}" class="btn btn-black  text-white">
-                    <i class="fas fa-arrow-left"></i>
-                    Back
+                <a href="{{ route($routes[$role] ?? 'home') }}" class="btn btn-black text-white">
+                    <i class="fas fa-arrow-left"></i> Back
                 </a>
             </div>
 
@@ -187,12 +194,12 @@
                 <div class="row">
                     <div class="file-attach p-10 col-md-12 text-center mb-4">
                         <div class="file-title bg-white">
-                            Thesis File
+                            Title Page
                         </div>
                         <div class="file-body bg-white">
                             <div class="file-icon">
                                 @if (!empty($archive->thesis_file))
-                                    <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'thesis']) }}"
+                                    <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'thesis']) }}?t={{ time() }}"
                                         target="_blank">
                                         <i class="fas fa-file-pdf text-danger"></i>
                                     </a>
@@ -210,12 +217,11 @@
                         <div class="file-title bg-white">
                             Tables File
                         </div>
-
                         <div class="file-body bg-white">
                             <div class="file-icon">
                                 @if (!empty($archive->tables_file))
-                                    <a
-                                        href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'tables']) }}">
+                                    <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'tables']) }}?t={{ time() }}"
+                                        target="_blank">
                                         <i class="fas fa-file-pdf text-danger"></i>
                                     </a>
                                 @else
@@ -232,12 +238,11 @@
                         <div class="file-title bg-white">
                             Figures File
                         </div>
-
                         <div class="file-body bg-white">
                             <div class="file-icon">
                                 @if (!empty($archive->figures_file))
-                                    <a
-                                        href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'figures']) }}">
+                                    <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'figures']) }}?t={{ time() }}"
+                                        target="_blank">
                                         <i class="fas fa-file-pdf text-danger"></i>
                                     </a>
                                 @else
@@ -248,8 +253,6 @@
                                 {{ $figuresSize }}
                             </div>
                         </div>
-
-
                     </div>
 
                 </div>
@@ -308,8 +311,8 @@
                         <div class="file-body bg-white">
                             <div class="file-icon">
                                 @if (!empty($archive->recommendation_file))
-                                    <a href="{{ asset('storage/' . $archive->recommendation_file) }}" target="_blank"
-                                        rel="noopener">
+                                    <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'recommendation']) }}?t={{ time() }}"
+                                        target="_blank">
                                         <i class="fas fa-file-pdf text-danger"></i>
                                     </a>
                                 @else

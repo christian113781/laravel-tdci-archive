@@ -190,16 +190,17 @@ class ArchiveController extends Controller
         return redirect()->back()->with('success', 'Access request submitted successfully.');
     }
 
-    public function downloadArchiveFile($archiveId, $section)
+    // After
+    public function downloadArchiveFile($archive, $section)
     {
-        $archive = Archive::findOrFail($archiveId);
+        $archive = Archive::findOrFail($archive);
         $user = auth()->user();
 
         if (! $user) {
             abort(403);
         }
 
-        $maxDownloads = 15;
+        $maxDownloads = 10;
 
         if (strtolower($user->role) === 'patron') {
 
@@ -211,12 +212,13 @@ class ArchiveController extends Controller
             $currentDownloads = $record ? $record->downloads : 0;
 
             if ($currentDownloads >= $maxDownloads) {
-                return back()->with('error', 'You reached the download limit for this thesis.');
+                return back()->with('error', 'You have reached the view limit for this thesis.');
             }
 
             if ($record) {
                 DB::table('archive_user_downloads')
-                    ->where('id', $record->id)
+                    ->where('archive_id', $archive->id)
+                    ->where('user_id', $user->id)
                     ->update([
                         'downloads' => $currentDownloads + 1,
                         'updated_at' => now(),
@@ -238,6 +240,12 @@ class ArchiveController extends Controller
             return back()->with('error', 'File not found.');
         }
 
-        return Storage::download($filePath);
+        return response()->file(Storage::path($filePath), [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$section.'.pdf"',
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
     }
 }

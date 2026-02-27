@@ -161,7 +161,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="thesis_file">Upload Thesis File</label>
+                                        <label for="thesis_file">Upload Title Page</label>
 
                                         @if (!empty($archive->thesis_file))
                                             <div id="currentFile" class="mb-2">

@@ -161,7 +161,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="tables_file">Upload Thesis File</label>
+                                        <label for="tables_file">Upload Title Page</label>
                                         <div id="currentFile" class="mb-2"></div>
 
                                         <input type="file" class="form-control-file" id="thesis_file"
