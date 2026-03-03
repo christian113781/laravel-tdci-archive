@@ -142,7 +142,7 @@
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label for="archive_citation">Recommend Citation</label>
-                                        <textarea class="form-control input-square" id="archive_citation" name="archive_citation" rows="5" required>{{ old('archive_citation', $archive->subject) }}</textarea>
+                                        <textarea class="form-control input-square" id="archive_citation" name="archive_citation" rows="5" required>{{ old('archive_citation', $archive->citation) }}</textarea>
                                     </div>
                                 </div>
                             </div>

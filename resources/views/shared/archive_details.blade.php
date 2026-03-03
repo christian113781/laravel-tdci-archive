@@ -282,7 +282,7 @@
                                 <span class="">
                                     <span class="txt-info">
 
-                                        @if ($archive->category === 'a')
+                                        @if ($archive->category === 'A')
                                             General
                                         @else
                                             Limited Access
