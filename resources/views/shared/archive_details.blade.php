@@ -161,8 +161,8 @@
                         <td>{{ $archive->year ?? 'n/a' }}</td>
                     </tr>
                     <tr>
-                        <th>Subject</th>
-                        <td><span class="txt-info">{{ $archive->subject ?? 'no subject available.' }}</span></td>
+                        <th>Abstract</th>
+                        <td><span class="txt-info">{{ $archive->subject ?? 'no abstract available.' }}</span></td>
                     </tr>
                     <tr>
                         <th>Program</th>

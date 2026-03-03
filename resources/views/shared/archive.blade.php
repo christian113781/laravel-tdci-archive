@@ -61,7 +61,7 @@
                                         </option>
                                         <option value="4" {{ request('field') == 4 ? 'selected' : '' }}>Year
                                         </option>
-                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Subject
+                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Abstract
                                         </option>
                                     </select>
                                 </div>
@@ -151,7 +151,7 @@
     <script>
         $('#basic-datatables').DataTable({
             columnDefs: [{
-              
+
                 targets: 0, // First column
                 render: function(data, type, row) {
                     if (type === 'display') {
@@ -160,7 +160,9 @@
                     return data;
                 }
             }, ],
-            order: [[3, 'desc']],
+            order: [
+                [3, 'desc']
+            ],
             responsive: true,
             autoWidth: true
 
@@ -205,7 +207,7 @@
             var subject = $tr.data('subject') || '';
 
             var kwBadges = keywords.split(',').map(function(k) {
-                return k.trim() ;
+                return k.trim();
             }).join('');
 
             return `
@@ -256,7 +258,7 @@
             var url = "{{ route($role . '.archive.details', ['id' => ':id']) }}";
             url = url.replace(':id', archiveId);
 
-        
+
             window.location.href = url;
         });
     </script>

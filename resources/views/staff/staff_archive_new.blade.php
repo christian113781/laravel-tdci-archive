@@ -133,7 +133,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="archive_subject">Subject:</label>
+                                        <label for="archive_subject">Abstract:</label>
                                         <textarea class="form-control input-square" id="archive_subject" name="archive_subject" rows="5" required></textarea>
                                     </div>
                                 </div>

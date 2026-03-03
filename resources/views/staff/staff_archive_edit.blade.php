@@ -133,7 +133,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="archive_subject">Subject</label>
+                                        <label for="archive_subject">Abstract</label>
                                         <textarea class="form-control input-square" id="archive_subject" name="archive_subject" rows="5" required>{{ old('archive_subject', $archive->subject) }}</textarea>
                                     </div>
                                 </div>
@@ -165,8 +165,8 @@
 
                                         @if (!empty($archive->thesis_file))
                                             <div id="currentFile" class="mb-2">
-                                                <a href="{{ asset('storage/' . $archive->thesis_file) }}" target="_blank"
-                                                    class="text-info">
+                                                <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'thesis']) }}?t={{ time() }}"
+                                                    target="_blank" class="text-info">
                                                     <i class="fa fa-eye"></i> view_thesis_file.pdf
                                                 </a>
                                             </div>
@@ -184,10 +184,10 @@
                                         <br>
 
                                         {{-- Show link to current file if there is one --}}
-                                        @if (!empty($archive->tables_file) && \Illuminate\Support\Facades\Storage::disk('public')->exists($archive->tables_file))
+                                        @if (!empty($archive->tables_file))
                                             <div id="currentFile" class="mb-2">
-                                                <a href="{{ asset('storage/' . $archive->tables_file) }}" target="_blank"
-                                                    class="text-info">
+                                                <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'tables']) }}?t={{ time() }}"
+                                                    target="_blank" class="text-info">
                                                     <i class="fa fa-eye"></i> view_table_file.pdf
                                                 </a>
                                             </div>
@@ -207,17 +207,14 @@
                                         <label for="figures_file">Upload Figures File</label>
                                         <br>
 
-                                        @if (
-                                            !empty($archive->figures_file) &&
-                                                \Illuminate\Support\Facades\Storage::disk('public')->exists($archive->figures_file))
+                                        @if (!empty($archive->figures_file))
                                             <div id="currentFile" class="mb-2">
-                                                <a href="{{ asset('storage/' . $archive->figures_file) }}"
+                                                <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'figures']) }}?t={{ time() }}"
                                                     target="_blank" class="text-info">
                                                     <i class="fa fa-eye"></i> view_figures_file.pdf
                                                 </a>
                                             </div>
                                         @endif
-
                                         <input type="file" class="form-control-file" id="figures_file"
                                             name="figures_file[]" multiple accept="image/*"
                                             {{ empty($archive->figures_file) ? '' : '' }} />
@@ -230,17 +227,14 @@
                                         <label for="recommendation_file">Upload Recommendation File</label>
                                         <br>
 
-                                        @if (
-                                            !empty($archive->recommendation_file) &&
-                                                \Illuminate\Support\Facades\Storage::disk('public')->exists($archive->recommendation_file))
+                                        @if (!empty($archive->recommendation_file))
                                             <div id="currentFile" class="mb-2">
-                                                <a href="{{ asset('storage/' . $archive->recommendation_file) }}"
+                                                <a href="{{ route('archive.download', ['archive' => $archive->id, 'section' => 'recommendation']) }}?t={{ time() }}"
                                                     target="_blank" class="text-info">
                                                     <i class="fa fa-eye"></i> view_recommendation_file.pdf
                                                 </a>
                                             </div>
                                         @endif
-
                                         <input type="file" class="form-control-file" id="recommendation_file"
                                             name="recommendation_file[]" accept="image/*" multiple
                                             {{ empty($archive->recommendation_file) ? '' : '' }} />

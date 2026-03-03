@@ -99,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="col-md-12">
                 <div class="card">
@@ -108,7 +108,7 @@
                     </div>
                     <div class="card-body">
                         <div class="accordion accordion-black">
-                            @foreach ($archives as $archive)
+                            @forelse ($archives as $archive)
                                 <div class="card mb-4">
                                     <div class="card-header" id="heading{{ $archive->id }}" data-bs-toggle="collapse"
                                         data-bs-target="#collapse{{ $archive->id }}" aria-expanded="true"
@@ -139,9 +139,8 @@
 
                                             <div class="mt-3">
                                                 <i class="fas fa-tags"></i>&nbsp;&nbsp; <span class="small">
-                                                {{ $archive->keywords->pluck('name')->implode(', ') }}</span>
+                                                    {{ $archive->keywords->pluck('name')->implode(', ') }}</span>
                                             </div>
-
 
                                             <div class="mt-3">
                                                 <a href="{{ route('patron.archive.details', $archive->id) }}"
@@ -150,34 +149,16 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-
-
-
+                            @empty
+                                {{-- ✅ Show this when no published archives --}}
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-archive fa-2x mb-2"></i>
+                                    <p>No recent uploads available.</p>
+                                </div>
+                            @endforelse
                         </div>
 
                         {{ $archives->links('pagination::bootstrap-4') }}
-
-
-
-
-                        {{-- {{ $archives->link() }} --}}
-
-
-
-                        {{-- <nav aria-label="...">
-                            <ul class="pagination pg-warning mb-0">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1 <span
-                                            class="sr-only">(current)</span></a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav> --}}
-
                     </div>
                 </div>
             </div>

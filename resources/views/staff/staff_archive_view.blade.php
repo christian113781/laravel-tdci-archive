@@ -84,7 +84,7 @@
                         <td>2025</td>
                     </tr>
                     <tr>
-                        <th>Subject</th>
+                        <th>Abstract</th>
                         <td>As the visibility of women and female-identifying musicians in the local underground
                             music scene increases, new perspectives must emerge to transform how the space is
                             experienced. Music infrastructure, such as performance and training spaces, must
