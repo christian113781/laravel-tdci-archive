@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->hasMany(Bookmark::class, 'user_id');
     }
 
+    public function loginSessions(): HasMany
+    {
+        return $this->hasMany(UserLoginSession::class, 'user_id');
+    }
+
     
 
 

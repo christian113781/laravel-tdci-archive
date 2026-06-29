@@ -12,6 +12,8 @@ use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PatronVerificationEmail;
 
 
 class AdminControllerPatron extends Controller
@@ -25,7 +27,22 @@ class AdminControllerPatron extends Controller
     $student = User::findOrFail($id);
     $student->status = 'verified';
     $student->save();
+    
+    // Send verification email
+    Mail::to($student->email)->send(new PatronVerificationEmail($student->name, 'verified'));
+    
     return redirect()->back()->with('verified_success', 'Patron verified successfully.');
+    }
+
+    public function reject($id) {
+    $student = User::findOrFail($id);
+    $student->status = 'rejected';
+    $student->save();
+    
+    // Send rejection email
+    Mail::to($student->email)->send(new PatronVerificationEmail($student->name, 'rejected'));
+    
+    return redirect()->back()->with('verified_success', 'Patron rejected successfully.');
     }
 
     public function destroy($id) {

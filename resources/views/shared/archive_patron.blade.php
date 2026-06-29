@@ -18,172 +18,186 @@
 
 
 @section('pages')
-    <div class="page-inner ms-lg-0">
-        <div class="page-header ">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Home</li>
-                    <li class="breadcrumb-item active" aria-current="page">Archive</li>
-                    <li class="breadcrumb-item active" aria-current="page">List</li>
-                </ol>
-            </nav>
-        </div>
+<div class="page-inner ms-lg-0">
+    <div class="page-header ">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+                <li class="breadcrumb-item active" aria-current="page">Archive</li>
+                <li class="breadcrumb-item active" aria-current="page">List</li>
+            </ol>
+        </nav>
+    </div>
 
-        <div class="row">
+    <div class="row">
 
-            <div class="col-md-12">
+        <div class="col-md-12">
 
-                <form action="{{ route('patron.archive') }}" method="GET" class="mb-1">
-                    <div class="card mb-0 rounded" style="background: transparent !important; box-shadow: none;">
-
-                        <div class="card-body">
-
-                            <div class=" gap-2 justify-content-center align-items-center d-flex flex-column flex-md-row">
-
-                                <!-- Dropdown -->
-                                <div class="col-12 col-md-3">
-                                    <select name="field" class="form-select form-control w-100">
-                                        <option value="">Any field</option>
-                                        <option value="1" {{ request('field') == 1 ? 'selected' : '' }}>Title
-                                        </option>
-                                        <option value="2" {{ request('field') == 2 ? 'selected' : '' }}>Author
-                                        </option>
-                                        <option value="3" {{ request('field') == 3 ? 'selected' : '' }}>Keyword
-                                        </option>
-                                        <option value="5" {{ request('field') == 5 ? 'selected' : '' }}>Program
-                                        </option>
-                                        <option value="4" {{ request('field') == 4 ? 'selected' : '' }}>Year
-                                        </option>
-                                        <option value="6" {{ request('field') == 6 ? 'selected' : '' }}>Subject
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <!-- Search Input -->
-                                <div class="col-12 col-md-4">
-                                    <input type="text" name="search" value="{{ request('search') }}"
-                                        class="form-control w-100" placeholder="Search...">
-                                </div>
-
-                                <!-- Search Button -->
-                                <div class="col-12 col-md-auto text-center">
-                                    <button type="submit" class="btn btn-primary w-100 w-md-auto">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title mb-0">Archives</h4>
-
-                    </div>
+            <form action="{{ route('patron.archive') }}" method="GET" class="mb-1">
+                <div class="card mb-0 rounded" style="background: transparent !important; box-shadow: none;">
 
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="basic-datatables" class="display table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Category</th>
-                                        <th>Views</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($archives as $archive)
-                                        <tr data-subject="{{ $archive->subject }}" data-id="{{ $archive->id }}"
-                                            data-authors="{{ $archive->authors }}" data-year="{{ $archive->year }}"
-                                            data-keywords="{{ $archive->keywords->pluck('name')->join(', ') }}">
-                                            <td>{{ $archive->title }}</td>
-                                            <td>
-                                                @if ($archive->category === 'A')
-                                                    <span class="badge bg-info">General</span>
-                                                @elseif ($archive->category === 'B')
-                                                    <span class="badge bg-danger">Limited Access</span>
-                                                @else
-                                                    <span class="badge bg-secondary">N/A</span>
-                                                @endif
-                                            </td>
-                                            <td><span class="badge badge-secondary">{{ $archive->views }}</span></td>
-                                            <td>
-                                                <div
-                                                    class="form-button-action d-flex gap-2 justify-content-center align-items-center p-2">
-                                                    <button class="btn btn-sm btn-info details-control" title="Details"><i
-                                                            class="fa fa-plus-square"></i></button>
 
-                                                    @php
-                                                        $canView = $archive->userCanView(auth()->id());
-                                                    @endphp
+                        <div class=" gap-2 justify-content-center align-items-center d-flex flex-column flex-md-row">
 
-                                                    @if ($canView)
-                                                        <a href="{{ route('patron.archive.details', $archive->id) }}"
-                                                            class="btn btn-sm ms-2 btn-primary btn-view" title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                    @else
-                                                        <form id="request-access-form-{{ $archive->id }}"
-                                                            action="{{ route('patron.archive.requestAccess', $archive->id) }}"
-                                                            method="POST" style="display: none;">
-                                                            @csrf
-                                                        </form>
+                            <!-- Dropdown -->
+                            <div class="col-12 col-md-3">
+                                <select name="field" class="form-select form-control w-100">
+                                  
+                                    <option value="1" {{ request('field')==1 ? 'selected' : '' }}>Title
+                                    </option>
+                                    <option value="2" {{ request('field')==2 ? 'selected' : '' }}>Author
+                                    </option>
+                                    <option value="3" {{ request('field')==3 ? 'selected' : '' }}>Keyword
+                                    </option>
+                                    <option value="5" {{ request('field')==5 ? 'selected' : '' }}>Program
+                                    </option>
+                                    <option value="4" {{ request('field')==4 ? 'selected' : '' }}>Year
+                                    </option>
+                                    <option value="6" {{ request('field')==6 ? 'selected' : '' }}>Subject
+                                    </option>
+                                </select>
+                            </div>
 
-                                                        <button type="button"
-                                                            class="btn btn-sm ms-2 btn-primary btn-view-blocked"
-                                                            data-archive-id="{{ $archive->id }}" title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                    @endif
+                            <!-- Search Input -->
+                            <div class="col-12 col-md-4">
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    class="form-control w-100" placeholder="Search...">
+                            </div>
 
-
-                                                    @php
-                                                        $isBookmarked =
-                                                            $archive->bookmarks->where('user_id', Auth::id())->count() >
-                                                            0;
-                                                    @endphp
-
-                                                    <form action="{{ route('patron.archive.toggle', $archive->id) }}"
-                                                        method="POST" class="d-inline m-0 p-0">
-                                                        <!-- make form inline and remove margins/paddings -->
-                                                        @csrf
-                                                        @method('PUT')
-
-                                                        <button type="submit"
-                                                            class="btn btn-sm {{ $isBookmarked ? 'btn-danger' : 'btn-secondary' }}"
-                                                            title="{{ $isBookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}">
-                                                            <i class="fa fa-bookmark"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-
-
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-
-
-                            </table>
+                            <!-- Search Button -->
+                            <div class="col-12 col-md-auto text-center">
+                                <button type="submit" class="btn btn-primary w-100 w-md-auto">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
                         </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Archives</h4>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Views</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (request('search') || request('field'))
+                                @forelse ($archives as $archive)
+                                <tr data-subject="{{ $archive->subject }}" data-id="{{ $archive->id }}"
+                                    data-authors="{{ $archive->authors }}" data-year="{{ $archive->year }}"
+                                    data-keywords="{{ $archive->keywords->pluck('name')->join(', ') }}">
+                                    <td>{{ $archive->title }}</td>
+                                    <td>
+                                        @if ($archive->category === 'A')
+                                        <span class="badge bg-info">General</span>
+                                        @elseif ($archive->category === 'B')
+                                        <span class="badge bg-danger">Limited Access</span>
+                                        @else
+                                        <span class="badge bg-secondary">N/A</span>
+                                        @endif
+                                    </td>
+                                    <td><span class="badge badge-secondary">{{ $archive->views }}</span></td>
+                                    <td>
+                                        <div
+                                            class="form-button-action d-flex gap-2 justify-content-center align-items-center p-2">
+                                            <button class="btn btn-sm btn-info details-control" title="Details"><i
+                                                    class="fa fa-plus-square"></i></button>
+
+                                            @php
+                                            $canView = $archive->userCanView(auth()->id());
+                                            @endphp
+
+                                            @if ($canView)
+                                            <a href="{{ route('patron.archive.details', $archive->id) }}"
+                                                class="btn btn-sm ms-2 btn-primary btn-view" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            @else
+                                            <form id="request-access-form-{{ $archive->id }}"
+                                                action="{{ route('patron.archive.requestAccess', $archive->id) }}"
+                                                method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+
+                                            <button type="button" class="btn btn-sm ms-2 btn-primary btn-view-blocked"
+                                                data-archive-id="{{ $archive->id }}" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            @endif
+
+
+                                            @php
+                                            $isBookmarked =
+                                            $archive->bookmarks
+                                            ->where('user_id', Auth::id())
+                                            ->count() > 0;
+                                            @endphp
+
+                                            <form action="{{ route('patron.archive.toggle', $archive->id) }}"
+                                                method="POST" class="d-inline m-0 p-0">
+                                                <!-- make form inline and remove margins/paddings -->
+                                                @csrf
+                                                @method('PUT')
+
+                                                <button type="submit"
+                                                    class="btn btn-sm {{ $isBookmarked ? 'btn-danger' : 'btn-secondary' }}"
+                                                    title="{{ $isBookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}">
+                                                    <i class="fa fa-bookmark"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="fas fa-search me-2"></i>No data available in table
+                                    </td>
+                                </tr>
+                                @endforelse
+                                @else
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="fas fa-inbox me-2"></i>No data available in table
+                                    </td>
+                                </tr>
+                                @endif
+                            </tbody>
+
+
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
+
+
+</div>
 @endsection
 
 @push('script')
-    <script>
-        $('#basic-datatables').DataTable({
+<script>
+    $('#basic-datatables').DataTable({
 
             columnDefs: [{
                 targets: 0, // First column
@@ -198,7 +212,9 @@
                 [2, 'desc']
             ],
             responsive: true,
-            autoWidth: true
+            autoWidth: true,
+            searching: false
+
 
 
         });
@@ -242,7 +258,7 @@
             var subject = $tr.data('subject') || '';
 
             var kwBadges = keywords.split(',').map(function(k) {
-                return k.trim() ;
+                return k.trim();
             }).join('');
 
             return `
@@ -296,9 +312,9 @@
 
             window.location.href = url;
         });
-    </script>
-    <script>
-        @if (session('success'))
+</script>
+<script>
+    @if (session('success'))
             swal("Good job!", "{{ session('success') }}", {
                 icon: "success",
                 buttons: {
@@ -418,5 +434,5 @@
                 });
             });
         });
-    </script>
+</script>
 @endpush

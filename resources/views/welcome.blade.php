@@ -122,58 +122,8 @@
     <section class="hero-area">
         <div class="hero-slider">
             <!-- Single Slider -->
-            <div class="hero-inner overlay"
-                style="background-image: url('{{ asset('landing/images/slider-bg1.jpg') }}');">
-                <div class="container">
-                    <div class="row ">
-                        <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
-                            <div class="home-slider">
-                                <div class="hero-text">
-                                    <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to Learning Today</h5>
-                                    <h1 class="wow fadeInUp" data-wow-delay=".5s">TDCI ARCHIVING SYSTEM <br>  Reliable & Efficient Medical
-                                        Archiving</h1>
-                                    <p class="wow fadeInUp" data-wow-delay=".7s">
-                                        Our PACS (Picture Archiving and Communication System) streamlines digital
-                                        storage<br>
-                                        and retrieval of medical images and reports with speed and security.<br>
-                                        No more film delays—just instant access for better patient care.
-                                    </p>
-                                    <div class="button wow fadeInUp" data-wow-delay=".9s">
-                                        <a href="javascript:void(0)" class="btn">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/ End Single Slider -->
-            <!-- Single Slider -->
-            <div class="hero-inner overlay"
-                style="background-image: url('{{ asset('landing/images/slider-bg2.jpg') }}');">
-                <div class="container">
-                    <div class="row ">
-                        <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
-                            <div class="home-slider">
-                                <div class="hero-text">
-                                    <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to learning Today</h5>
-                                    <h1 class="wow fadeInUp" data-wow-delay=".5s">Smart Medical <br> Imaging Archive
-                                    </h1>
-                                    <p class="wow fadeInUp" data-wow-delay=".7s">
-                                        Experience the power of PACS—fast, secure image archiving and retrieval,<br>
-                                        accessible anytime, anywhere, to keep healthcare moving forward.<br>
-                                        Leave film behind and embrace digital efficiency.
-                                    </p>
-                                    <div class="button wow fadeInUp" data-wow-delay=".9s">
-                                        <a href="javascript:void(0)" class="btn">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/ End Single Slider -->
+            
+            
             <!-- Single Slider -->
             <div class="hero-inner overlay"
                 style="background-image: url('{{ asset('landing/images/slider-bg3.jpg') }}');">
@@ -183,12 +133,9 @@
                             <div class="home-slider">
                                 <div class="hero-text">
                                     <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to learning Today</h5>
-                                    <h1 class="wow fadeInUp" data-wow-delay=".5s">Integrated PACS <br> for Seamless
-                                        Workflow</h1>
+                                    <h1 class="wow fadeInUp" data-wow-delay=".5s">Welcome to TDCI <br> Online Repository of Theses Collection</h1>
                                     <p class="wow fadeInUp" data-wow-delay=".7s">
-                                        Our PACS integrates with EHR, RIS, and HIS to centralize medical images<br>
-                                        and streamline diagnostics and collaboration.<br>
-                                        Empower clinicians with secure, centralized access to imaging.
+                                        Discover, explore, and access thesis papers submitted by our students. Browse our collection and find valuable resources for your studies and research
                                     </p>
                                     <div class="button wow fadeInUp" data-wow-delay=".9s">
                                         <a href="javascript:void(0)" class="btn">Learn More</a>

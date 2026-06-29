@@ -10,26 +10,36 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class ArchivesByYearExport implements FromCollection, WithHeadings, WithMapping
 {
     protected $year;
+    protected $programId;
 
-    public function __construct(int $year)
+    public function __construct(int $year, $programId = null)
     {
         $this->year = $year;
+        // Cast programId to int if it's not null or empty string
+        $this->programId = (!empty($programId) && $programId !== '') ? (int)$programId : null;
     }
 
     public function collection()
     {
-        return Archive::with('keywords')
-            ->where('year', $this->year)
-            ->get();
+        $query = Archive::with('keywords', 'program')
+            ->where('year', $this->year);
+        
+        // Apply program filter if programId is provided
+        if (!is_null($this->programId) && $this->programId > 0) {
+            $query->where('program_id', $this->programId);
+        }
+        
+        return $query->get();
     }
 
     public function headings(): array
     {
         return [
-            'Archive Code',   // new column
+            'Archive Code',
             'Title',
             'Authors',
             'Year',
+            'Program',
             'Category',
             'Keywords',
             'Status',
@@ -39,10 +49,11 @@ class ArchivesByYearExport implements FromCollection, WithHeadings, WithMapping
     public function map($archive): array
     {
         return [
-            $archive->archive_code,            // new field
+            $archive->archive_code,
             $archive->title,
             $archive->authors,
             $archive->year,
+            $archive->program?->name ?? 'N/A',
             $archive->category,
             $archive->keywords->pluck('name')->implode(', '),
             $archive->status,

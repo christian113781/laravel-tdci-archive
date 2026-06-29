@@ -32,6 +32,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}">
+    <!-- DateTime Picker CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 
 
 </head>
@@ -74,7 +77,7 @@
 
             <div class="container">
                 @yield('pages')
-              
+
 
 
             </div>
@@ -115,11 +118,15 @@
 
     <!-- UI Core JS -->
     <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('assets/js/plugin/select2/select2.full.min.js') }}"></script>
 
-    
+
 
     <!-- Optional demo scripts -->
     <script src="{{ asset('assets/js/setting-demo.js') }}"></script>
+    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+    <script src="{{ asset('assets/js/setting-demo2.js') }}"></script>
 
     {{-- <script src="{{ asset('assets/js/demo.js') }}"></script> --}}
 

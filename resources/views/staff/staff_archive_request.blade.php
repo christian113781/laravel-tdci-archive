@@ -38,9 +38,9 @@
                                             <td style="white-space: nowrap;">
                                                 {{ $req->user->first_name }} {{ $req->user->last_name }}
                                             </td>
-                                            <td>{{ $req->user->email }}</td>
+                                            <td>{{ $req->user->email ?? 'N.A'}}</td>
                                             <td style="text-align: left;">
-                                                {{ $req->archive->title }}
+                                               {{ $req->archive->title ?? 'N.A'}}
                                             </td>
                                             
                                             <td>{{ $req->created_at->format('Y-m-d') }}</td>

@@ -1,17 +1,19 @@
 @php
-    $adminActiveArchive = request()->routeIs(['admin.archive']);
-    $adminActiveProgram = request()->routeIs(['admin.program']);
-    $adminActiveDashboard = request()->routeIs('admin.dashboard');
-    $adminActiveKeyword = request()->routeIs(['admin.keyword']);
-    $adminActiveReport = request()->routeIs(['admin.report']);
-    $adminActiveAnnouncement = request()->routeIs(['admin.announcement']);
-    $adminProfileActive = request()->routeIs(['admin.profile']);
+$adminActiveArchive = request()->routeIs(['admin.archive']);
+$adminActiveProgram = request()->routeIs(['admin.program']);
+$adminActiveDashboard = request()->routeIs('admin.dashboard');
+$adminActiveKeyword = request()->routeIs(['admin.keyword']);
+$adminActiveReport = request()->routeIs(['admin.report']);
+$adminActiveAnnouncement = request()->routeIs(['admin.announcement']);
+$adminProfileActive = request()->routeIs(['admin.profile']);
 
-    $adminActiveUser = request()->routeIs([
-        'admin.user',
-        'admin.patron',
-    ]);
+$adminActiveUser = request()->routeIs(['admin.user', 'admin.patron']);
+
+$adminActive = request()->routeIs(['admin.archive', 'admin.archive.manage', 'admin.archive.request']);
 @endphp
+
+
+
 
 <div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
@@ -56,8 +58,9 @@
                 </li>
 
 
-                 <li class="nav-item {{ $adminActiveUser ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#users" aria-expanded="{{ $adminActiveUser ? 'true' : 'false' }}">
+                <li class="nav-item {{ $adminActiveUser ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#users"
+                        aria-expanded="{{ $adminActiveUser ? 'true' : 'false' }}">
                         <i class="fas fa-user-alt"></i>
                         <p>Users</p>
                         <span class="caret"></span>
@@ -79,16 +82,34 @@
                     </div>
                 </li>
 
-
-                  <li class="nav-item {{ $adminActiveArchive ? 'active' : '' }}">
-                    <a href="{{ route('admin.archive') }}">
+                <li class="nav-item {{ $adminActiveArchive ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#archive" aria-expanded="{{ $adminActive ? 'true' : 'false' }}">
                         <i class="fas fa-archive"></i>
                         <p>Archives</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse {{ $adminActive ? 'show' : '' }}" id="archive">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ request()->routeIs('admin.archive') ? 'active' : '' }}">
+                                <a href="{{ route('admin.archive') }}">
+                                    <span class="sub-item">Archive List</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.archive.manage') ? 'active' : '' }}">
+                                <a href="{{ route('admin.archive.manage') }}">
+                                    <span class="sub-item">Manage Archive</span>
+                                </a>
+                            </li>
+
+                            <li class="{{ request()->routeIs('admin.archive.request') ? 'active' : '' }}">
+                                <a href="{{ route('admin.archive.request') }}">
+                                    <span class="sub-item">Request Archive</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
-
-                  
 
                 <li class="nav-item {{ $adminActiveKeyword ? 'active' : '' }}">
                     <a href="{{ route('admin.keyword') }}">
@@ -105,15 +126,15 @@
                     </a>
                 </li>
 
-            
-
-
-              
 
 
 
 
-             
+
+
+
+
+
 
 
 
@@ -124,13 +145,13 @@
                     <h4 class="text-section">Maintenance</h4>
                 </li>
 
-                  <li class="nav-item {{ $adminActiveAnnouncement ? 'active' : '' }}">
+                <li class="nav-item {{ $adminActiveAnnouncement ? 'active' : '' }}">
                     <a href="{{ route('admin.announcement') }}">
                         <i class="fas fa-paper-plane"></i>
                         <p>Announcements</p>
                     </a>
                 </li>
-                   <li class="nav-item {{ $adminActiveReport ? 'active' : '' }}">
+                <li class="nav-item {{ $adminActiveReport ? 'active' : '' }}">
                     <a href="{{ route('admin.report') }}">
                         <i class="fas fa-paperclip"></i>
                         <p>Reports</p>
@@ -145,7 +166,7 @@
                 </li>
 
 
-                
+
 
 
 

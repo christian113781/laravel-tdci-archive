@@ -5,12 +5,12 @@
 
         <div class="page-header">
             <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page">Home</li>
-     <li class="breadcrumb-item active" aria-current="page">Manage</li>
-      <li class="breadcrumb-item active" aria-current="page">User Role</li>
-  </ol>
-</nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage</li>
+                    <li class="breadcrumb-item active" aria-current="page">User Role</li>
+                </ol>
+            </nav>
 
         </div>
 
@@ -41,22 +41,24 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                
+
                                 <tbody>
                                     @foreach ($users as $key => $user)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>
-                                                @if ($user->avatar)
-                                                    <img src="{{ asset('storage/' . $user->avatar) }}" width="40"
-                                                        height="40" class="rounded-circle">
-                                                @else
-                                                    <img src="" class="rounded-circle">
-                                                @endif
+                                                <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('assets/img/profile.jpg') }}"
+                                                    width="40" height="40" class="rounded-circle">
                                             </td>
                                             <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                                             <td>{{ $user->email }}</td>
-                                            <td>{{ ucfirst($user->role) }}</td>
+                                            <td>
+                                                @if ($user->role === 'staff')
+                                                    Manage Staff
+                                                @else
+                                                    {{ ucfirst($user->role) }}
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div
                                                     class="form-button-action d-flex gap-2 justify-content-center align-items-center">
@@ -102,14 +104,14 @@
 
 
         $(document).ready(function() {
-    $(document).on('click', '.btn-view-user', function() {
-        const id = $(this).data('id');
-        alert('Clicked! User ID: ' + id);
-        console.log('Clicked! User ID:', id);
-    });
-});
+            $(document).on('click', '.btn-view-user', function() {
+                const id = $(this).data('id');
+                alert('Clicked! User ID: ' + id);
+                console.log('Clicked! User ID:', id);
+            });
+        });
 
-       
+
         @if (session('success'))
             swal("Success!", "{{ session('success') }}", {
                 icon: "success",

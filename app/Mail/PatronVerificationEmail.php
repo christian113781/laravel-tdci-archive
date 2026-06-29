@@ -3,32 +3,42 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
-class MailTrap extends Mailable
+class PatronVerificationEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $name;
+    public $userName;
     public $status;
+    public $message;
 
-
-     public function __construct(string $name, string $status)
+    /**
+     * Create a new message instance.
+     */
+    public function __construct($userName, $status, $message = null)
     {
-        $this->name = $name;
+        $this->userName = $userName;
         $this->status = $status;
+        $this->message = $message;
     }
+
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
+        $subject = $this->status === 'verified'
+            ? 'Account Verification - APPROVED'
+            : 'Account Verification - REJECTED';
+
         return new Envelope(
-            subject: 'Mail Trap',
+            from: new Address('tagumdoctors727@gmail.com', 'TDCI Archive'),
+            subject: $subject,
         );
     }
 
@@ -38,8 +48,12 @@ class MailTrap extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.test-email',
-            with: ['name' => $this->name]
+            view: 'mail.patron-verification-email',
+            with: [
+                'userName' => $this->userName,
+                'status' => $this->status,
+                'message' => $this->message,
+            ],
         );
     }
 
@@ -51,19 +65,5 @@ class MailTrap extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-     public function build()
-    {
-        $subject = $this->status === 'approved'
-            ? 'Your Archive Access Request is Approved'
-            : 'Your Archive Access Request is Rejected';
-
-        return $this->subject($subject)
-                    ->view('mail.test-email')
-                    ->with([
-                        'name' => $this->name,
-                        'status' => $this->status,
-                    ]);
     }
 }

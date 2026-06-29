@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\UserLoginSession;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,6 +38,12 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
+    // Record login session
+    UserLoginSession::create([
+        'user_id' => $user->id,
+        'login_at' => now(),
+    ]);
+
     $request->session()->regenerate();
     
         if ($user->role === 'admin') {
@@ -53,6 +60,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
+        // Record logout session if user exists
+        if ($user) {
+            UserLoginSession::where('user_id', $user->id)
+                ->whereNull('logout_at')
+                ->latest('id')
+                ->first()
+                ?->update(['logout_at' => now()]);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

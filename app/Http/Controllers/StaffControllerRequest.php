@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\MailTrap;
+use App\Mail\GoogleEmail;
 use App\Models\ArchiveAccessRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -25,7 +26,7 @@ class StaffControllerRequest extends Controller
         $user = User::findOrFail($id);
         $name = $user->last_name ?? 'User';
 
-        Mail::to($user->email)->send(new MailTrap($name, 'approved'));
+        Mail::to($user->email)->send(new GoogleEmail($name, 'approved'));
 
         return response()->json([
             'status' => 'Mail sent successfully',
@@ -46,7 +47,7 @@ class StaffControllerRequest extends Controller
         $name = $request->user->last_name ?? 'User';
 
         try {
-            Mail::to($request->user->email)->send(new MailTrap($name, 'approved'));
+            Mail::to($request->user->email)->send(new GoogleEmail($name, 'approved'));
 
             return redirect()->back()->with('success', 'Archive access request approved and email sent.');
         } catch (\Exception $e) {
@@ -65,14 +66,16 @@ class StaffControllerRequest extends Controller
         $request->approved_by = auth()->id();
         $request->save();
 
+        $name = $request->user->last_name ?? 'User';
+
         try {
-            Mail::to($request->user->email)->send(new MailTrap($name, 'rejected'));
+            Mail::to($request->user->email)->send(new GoogleEmail($name, 'rejected'));
 
             return redirect()->back()->with('success', 'Archive access request rejected and email sent.');
         } catch (\Exception $e) {
             Log::error('Mail sending failed: '.$e->getMessage());
 
-            return redirect()->back()->with('error', 'Archive access request approved but email not sent.');
+            return redirect()->back()->with('error', 'Archive access request rejected but email not sent.');
         }
 
     }

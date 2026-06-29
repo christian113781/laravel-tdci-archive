@@ -121,6 +121,23 @@ public function accessRequests()
                     ->whereIn('status', ['pending','approved'])
                     ->exists();
     }
+
+    /**
+     * Get all view logs for this archive
+     */
+    public function viewLogs()
+    {
+        return $this->hasMany(ArchiveViewLog::class, 'archive_id');
+    }
+
+    /**
+     * Get the total number of views for this archive
+     * Computed property for compatibility
+     */
+    public function getViewsAttribute()
+    {
+        return $this->viewLogs()->count();
+    }
     
 }
 

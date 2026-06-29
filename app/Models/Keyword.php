@@ -15,7 +15,7 @@ class Keyword extends Model
     {
         return $this->belongsToMany(
             Archive::class,
-            'archive_keyword',
+             'archive_keyword',
             'keyword_id',
             'archive_id'
         )->withTimestamps();

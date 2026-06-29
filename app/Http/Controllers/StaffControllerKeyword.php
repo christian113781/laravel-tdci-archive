@@ -22,21 +22,39 @@ class StaffControllerKeyword extends Controller
     }
 
    public function store(Request $request) {
-    $request->validate(['name' => 'required|string|max:255']);
-    Keyword::create(['name' => $request->name]);
-    return redirect()->back()->with('success', 'Keyword added.');
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', 'unique:keywords,name'],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('staff.keyword')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        Keyword::create($validator->validated());
+        return redirect()->back()->with('success', 'Keyword added.');
 }
 
 public function update(Request $request, $id) {
-    $request->validate(['name' => 'required|string|max:255']);
-    $keyword = Keyword::findOrFail($id);
-    $keyword->update(['name' => $request->name]);
-    return redirect()->back()->with('success', 'Keyword updated.');
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255', Rule::unique('keywords', 'name')->ignore($id)],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('staff.keyword')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $keyword = Keyword::findOrFail($id);
+        $keyword->update($validator->validated());
+        return redirect()->back()->with('success', 'Keyword updated.');
 }
 
 public function destroy($id) {
     $keyword = Keyword::findOrFail($id);
     $keyword->delete();
-    return redirect()->back()->with('success', 'Keyword deleted.');
+    return redirect()->back()->with('error', 'Keyword deleted.');
 }
 }

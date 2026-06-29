@@ -17,7 +17,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
 
-            
+
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
                     <i class="gg-menu-right"></i>
@@ -66,7 +66,7 @@
                     </a>
                     <div class="collapse {{ $staffActive ? 'show' : '' }}" id="archive">
                         <ul class="nav nav-collapse">
-                            <li class="{{ request()->routeIs('staff.archive') ? 'active' : '' }}">
+                             <li class="{{ request()->routeIs('staff.archive') ? 'active' : '' }}">
                                 <a href="{{ route('staff.archive') }}">
                                     <span class="sub-item">Archive List</span>
                                 </a>
@@ -87,7 +87,7 @@
                 </li>
 
 
-                 <li class="nav-item {{ $staffActiveKeyword ? 'active' : '' }}">
+                <li class="nav-item {{ $staffActiveKeyword ? 'active' : '' }}">
                     <a href="{{ route('staff.keyword') }}">
                         <i class="fas fa-at"></i>
                         <p>Keywords</p>
@@ -95,7 +95,7 @@
                 </li>
 
 
-                  <li class="nav-item {{ $staffActiveProgram ? 'active' : '' }}">
+                <li class="nav-item {{ $staffActiveProgram ? 'active' : '' }}">
                     <a href="{{ route('staff.program') }}">
                         <i class="fab fa-discourse"></i>
                         <p>Programs</p>
@@ -111,8 +111,8 @@
                     <h4 class="text-section">Maintenance</h4>
                 </li>
 
-                
-                
+
+
                 <li class="nav-item {{ $staffProfileActive ? 'active' : '' }}">
                     <a href="{{ route('staff.profile') }}">
                         <i class="fas fa-user-shield"></i>

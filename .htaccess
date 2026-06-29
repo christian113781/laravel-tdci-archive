@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Allow storage folder
+    RewriteRule ^storage/(.*)$ public/storage/$1 [L]
+
+    # Redirect everything else to public
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

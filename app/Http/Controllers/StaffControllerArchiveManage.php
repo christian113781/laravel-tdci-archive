@@ -58,9 +58,15 @@ class StaffControllerArchiveManage extends Controller
 
     public function store(Request $request)
     {
+        
+        // Normalize title - remove newlines and extra spaces
+    $request->merge([
+        'archive_title' => preg_replace('/\s+/', ' ', trim($request->archive_title)),
+    ]);
+    
         $validated = $request->validate([
             'archive_code' => 'required|string|unique:archives,archive_code',
-            'archive_title' => 'required|string',
+            'archive_title' => 'required|string|unique:archives,title',
             'archive_citation' => 'required|string',
             'archive_author' => 'required|string|max:500',
             'archive_subject' => 'nullable|string',
@@ -82,13 +88,22 @@ class StaffControllerArchiveManage extends Controller
             'figures_file.*' => 'image|mimes:jpg,jpeg,png|max:3072',
 
             'multiple' => 'nullable|array',
-            'multiple.*' => 'exists:keywords,id',
+            'multiple.*' => 'string',
+            'new_keywords' => 'nullable|string',
+        ], [
+            'archive_title.unique' => 'This thesis title already exists in the system. Please use a different title.',
+            'archive_title.required' => 'The thesis title is required.',
+            'archive_code.unique' => 'This archive code already exists.',
         ]);
 
         $archiveCode = $request->archive_code;
         $folder = "archives/{$archiveCode}";
 
-        Storage::disk('public')->makeDirectory($folder);
+        $fullPath = storage_path("app/public/{$folder}");
+
+if (!file_exists($fullPath)) {
+    mkdir($fullPath, 0775, true); // true = recursive
+}
 
         $fileSections = [
             'thesis_file' => 'thesis',
@@ -190,7 +205,37 @@ class StaffControllerArchiveManage extends Controller
             'figures_file' => $pdfPaths['figures_file'],
         ]);
 
-        $archive->keywords()->sync($request->multiple ?? []);
+        // Handle keywords - both existing and new
+        $keywordIds = [];
+
+        // Process existing keywords
+        if ($request->multiple) {
+            foreach ($request->multiple as $keywordValue) {
+                if (strpos($keywordValue, 'existing_') === 0) {
+                    // Existing keyword
+                    $keywordId = str_replace('existing_', '', $keywordValue);
+                    $keywordIds[] = $keywordId;
+                }
+            }
+        }
+
+        // Process new keywords
+        if ($request->new_keywords) {
+            $newKeywords = array_filter(array_map('trim', explode('|', $request->new_keywords)));
+            foreach ($newKeywords as $keywordName) {
+                // Create or get the keyword
+                $keyword = Keyword::firstOrCreate(
+                    ['name' => $keywordName],
+                    ['name' => $keywordName]
+                );
+                $keywordIds[] = $keyword->id;
+            }
+        }
+
+        // Sync all keywords to the archive
+        if (!empty($keywordIds)) {
+            $archive->keywords()->sync($keywordIds);
+        }
 
         return redirect()
             ->route('staff.archive.manage')
@@ -243,6 +288,11 @@ class StaffControllerArchiveManage extends Controller
     public function update(Request $request, $id)
     {
         $archive = Archive::findOrFail($id);
+        
+        // Normalize title - remove newlines and extra spaces
+    $request->merge([
+        'archive_title' => preg_replace('/\s+/', ' ', trim($request->archive_title)),
+    ]);
 
         $validated = $request->validate([
             'archive_title' => 'required|string',
@@ -271,7 +321,11 @@ class StaffControllerArchiveManage extends Controller
         ]);
 
         $folder = "archives/{$archive->archive_code}";
-        Storage::disk('public')->makeDirectory($folder);
+        $fullPath = storage_path("app/public/{$folder}");
+
+if (!file_exists($fullPath)) {
+    mkdir($fullPath, 0775, true);
+}
 
         $fileSections = [
             'thesis_file' => 'thesis',

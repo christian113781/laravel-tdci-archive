@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Shared;
 use App\Http\Controllers\Controller;
 use App\Models\Archive;
 use App\Models\ArchiveAccessRequest;
+use App\Models\ArchiveViewLog;
+use App\Models\SearchLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -52,7 +54,7 @@ class ArchiveController extends Controller
 
         $filteredCount = $query->count();
 
-        $query->orderByDesc('views')->orderByDesc('created_at');
+        $query->orderByDesc('created_at');
         $archives = $query->paginate(50)->withQueryString();
 
         return view('shared.archive', compact('archives', 'totalArchives', 'filteredCount'));
@@ -66,39 +68,66 @@ class ArchiveController extends Controller
 
         $totalArchives = Archive::where('status', 'Publish')->count();
 
-        if ($request->filled('field') && $request->filled('search')) {
+        if ($request->filled('search')) {
             $search = $request->input('search');
             $field = $request->input('field');
+            $fieldNames = ['1' => 'Title', '2' => 'Author', '3' => 'Keyword', '4' => 'Year', '5' => 'Program', '6' => 'Abstract'];
 
-            switch ($field) {
-                case '1':
-                    $query->where('title', 'like', "%$search%");
-                    break;
-                case '2':
-                    $query->where('authors', 'like', "%$search%");
-                    break;
-                case '3':
-                    $query->whereHas('keywords', function ($q) use ($search) {
-                        $q->where('name', 'like', "%$search%");
-                    });
-                    break;
-                case '4':
-                    $query->where('year', $search);
-                    break;
-                case '5':
-                    $query->whereHas('program', function ($q) use ($search) {
-                        $q->where('name', 'like', "%$search%");
-                    });
-                    break;
-                case '6':
-                    $query->where('subject', 'like', "%$search%");
-                    break;
+            // Log the search ONLY for patron users
+            if (auth()->check() && auth()->user()->role === 'patron') {
+                SearchLog::create([
+                    'user_id' => auth()->id(),
+                    'search_term' => $search,
+                    'field' => (!empty($field) && isset($fieldNames[$field])) ? $fieldNames[$field] : 'Any field',
+                ]);
+            }
+
+            // Only apply field filter if a specific field is selected
+            if ($request->filled('field')) {
+                switch ($field) {
+                    case '1':
+                        $query->where('title', 'like', "%$search%");
+                        break;
+                    case '2':
+                        $query->where('authors', 'like', "%$search%");
+                        break;
+                    case '3':
+                        $query->whereHas('keywords', function ($q) use ($search) {
+                            $q->where('name', 'like', "%$search%");
+                        });
+                        break;
+                    case '4':
+                        $query->where('year', $search);
+                        break;
+                    case '5':
+                        $query->whereHas('program', function ($q) use ($search) {
+                            $q->where('name', 'like', "%$search%");
+                        });
+                        break;
+                    case '6':
+                        $query->where('subject', 'like', "%$search%");
+                        break;
+                }
+            } else {
+                // Search across all fields if "Any field" is selected
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%$search%")
+                        ->orWhere('authors', 'like', "%$search%")
+                        ->orWhere('subject', 'like', "%$search%")
+                        ->orWhere('year', 'like', "%$search%")
+                        ->orWhereHas('keywords', function ($kq) use ($search) {
+                            $kq->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('program', function ($pq) use ($search) {
+                            $pq->where('name', 'like', "%$search%");
+                        });
+                });
             }
         }
 
         $filteredCount = $query->count();
 
-        $query->orderByDesc('views')->orderByDesc('created_at');
+        $query->orderByDesc('created_at');
         $archives = $query->paginate(50)->withQueryString();
 
         return view('shared.archive_patron', compact('archives', 'totalArchives', 'filteredCount'));
@@ -109,7 +138,13 @@ class ArchiveController extends Controller
 
         $archive = Archive::with('keywords')->findOrFail($id);
 
-        $archive->increment('views');
+        // Log archive view for all authenticated users
+        if (auth()->check()) {
+            ArchiveViewLog::create([
+                'user_id' => auth()->id(),
+                'archive_id' => $archive->id,
+            ]);
+        }
         $basePath = 'public/archives/'.$archive->archive_code.'/';
 
         $figuresSize = $this->getFileSize($basePath.'figures.pdf');
@@ -171,12 +206,21 @@ class ArchiveController extends Controller
         // Optionally -> find the archive model
         $archive = Archive::findOrFail($archiveId);
 
+        $isAjaxRequest = $request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest';
+
         // Now your logic
         $alreadyRequested = ArchiveAccessRequest::where('user_id', $userId)
             ->where('archive_id', $archiveId)
             ->exists();
 
         if ($alreadyRequested) {
+            if ($isAjaxRequest) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You have already requested access.'
+                ], 400);
+            }
+
             return redirect()->back()->with('success', 'You have already requested access.');
         }
 
@@ -186,6 +230,13 @@ class ArchiveController extends Controller
             'status' => 'pending',
             'approved_by' => null,
         ]);
+
+        if ($isAjaxRequest) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Access request submitted successfully.'
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Access request submitted successfully.');
     }

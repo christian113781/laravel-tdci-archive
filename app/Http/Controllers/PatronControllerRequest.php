@@ -47,7 +47,7 @@ public function getArchive($id)
     // Increment views
     $archive->increment('views');
 
-    // ✅ Check if current user has already requested access
+    
     $existingRequest = ArchiveAccessRequest::where('user_id', auth()->id())
         ->where('archive_id', $id)
         ->latest()
@@ -61,7 +61,7 @@ public function getArchive($id)
         'authors'        => $archive->authors ?? null,
         'program'        => $archive->program->name ?? null,
         'year'           => $archive->year ?? null,
-        'views'          => $archive->views,
+        'views'          => $archive->viewLogs()->count(),
         'category'       => $archive->category ?? null,
         'request_status' => $existingRequest?->status, 
     ]);

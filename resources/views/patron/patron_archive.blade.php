@@ -23,7 +23,6 @@
                                 <!-- Dropdown -->
                                 <div class="col-12 col-md-2">
                                     <select name="field" class="form-select form-control w-100">
-                                        <option value="">Any field</option>
                                         <option value="1" {{ request('field') == 1 ? 'selected' : '' }}>Title</option>
                                         <option value="2" {{ request('field') == 2 ? 'selected' : '' }}>Author</option>
                                         <option value="3" {{ request('field') == 3 ? 'selected' : '' }}>Keyword
@@ -199,7 +198,8 @@
                 "pageLength": 50,
                 "order": [
                     [6, "desc"]
-                ] // sort column 6 (views) descending
+                ],
+                searching: false,
             });
         });
 
@@ -284,22 +284,22 @@
     <h4 class="fw-bold mb-3 text-center">${data.title}</h4>
 
      ${data.subject ? `
-                                            <div class="mb-3 d-flex justify-content-between align-items-start">
-                                                <p class="mb-0"><strong>Abstract:</strong></p>
-                                                ${data.year ? `<p class="mb-0"><strong>Year:</strong> ${data.year}</p>` : ''}
-                                            </div>
-                                            <p style="text-align: justify;">${data.subject}</p>
-                                        ` : ''}
+                                                                        <div class="mb-3 d-flex justify-content-between align-items-start">
+                                                                            <p class="mb-0"><strong>Abstract:</strong></p>
+                                                                            ${data.year ? `<p class="mb-0"><strong>Year:</strong> ${data.year}</p>` : ''}
+                                                                        </div>
+                                                                        <p style="text-align: justify;">${data.subject}</p>
+                                                                    ` : ''}
 
     <div class="row mb-3">
         ${data.program ? `
-                                                <div class="col-md-6 col-12 mb-2">
-                                                    <p class="mb-0"><strong>Program:</strong> ${data.program}</p>
-                                                </div>` : ''}
+                                                                            <div class="col-md-6 col-12 mb-2">
+                                                                                <p class="mb-0"><strong>Program:</strong> ${data.program}</p>
+                                                                            </div>` : ''}
         ${data.authors ? `
-                                                <div class="col-12 mb-2">
-                                                    <p class="mb-0"><strong>Authors:</strong> ${data.authors}</p>
-                                                </div>` : ''}
+                                                                            <div class="col-12 mb-2">
+                                                                                <p class="mb-0"><strong>Authors:</strong> ${data.authors}</p>
+                                                                            </div>` : ''}
         <div class="col-12">
             <p class="mb-0"><strong>Category:</strong> ${data.category === 'A' ? 'GENERAL' : 'RESTRICTED'}</p>
         </div>

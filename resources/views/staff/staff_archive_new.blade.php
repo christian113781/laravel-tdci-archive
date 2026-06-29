@@ -89,11 +89,12 @@
                                 <div class="col-md-7">
                                     <div class="form-group">
                                         <label>Keywords:</label>
+
                                         <div class="select2-input select2-danger">
-                                            <select id="multiple" name="multiple[]" class="form-control " multiple
-                                                data-placeholder="— Select a Keyword —">
+                                            <select id="multiple" name="multiple[]" class="form-control" multiple
+                                                data-placeholder="— Select or type keyword —">
                                                 @forelse ($keywords as $keyword)
-                                                    <option value="{{ $keyword->id }}"
+                                                    <option value="existing_{{ $keyword->id }}" data-type="existing"
                                                         {{ in_array($keyword->id, old('multiple', [])) ? 'selected' : '' }}>
                                                         {{ $keyword->name }}
                                                     </option>
@@ -243,7 +244,66 @@
         $('#multiple').select2({
             theme: "bootstrap",
             placeholder: $('#multiple').data('placeholder'),
-            allowClear: true
+            allowClear: true,
+            tags: true,
+            tokenSeparators: [','],
+            createTag: function(params) {
+                var term = $.trim(params.term);
+                if (term === '') {
+                    return null;
+                }
+                return {
+                    id: 'new_' + term,
+                    text: term,
+                    isNew: true
+                };
+            },
+            templateResult: function(data) {
+                if (!data.id) return data.text;
+
+                var $result = $('<span></span>');
+
+                if (data.isNew) {
+                    $result.append($(
+                        ''
+                    ));
+                } else {
+                    $result.append($(
+
+                    ));
+                }
+
+                $result.append($('<span>' + data.text + '</span>'));
+                return $result;
+            },
+            templateSelection: function(data) {
+                if (data.isNew) {
+                    return $(
+                        '<span>' +
+                        data.text + '</span>');
+                }
+                return data.text;
+            }
+        });
+
+        // Handle form submission to process new keywords
+        $('form').on('submit', function(e) {
+            var selectedKeywords = $('#multiple').select2('data');
+
+            if (selectedKeywords && selectedKeywords.length > 0) {
+                // Extract new keywords
+                var newKeywords = selectedKeywords.filter(function(k) {
+                    return k.isNew;
+                }).map(function(k) {
+                    return k.text;
+                });
+
+                // Create hidden field to store new keywords for backend processing
+                if (newKeywords.length > 0) {
+                    $('<input>').attr('type', 'hidden').attr('name', 'new_keywords').val(newKeywords.join('|'))
+                        .appendTo('form');
+                }
+            }
         });
     </script>
 
@@ -268,6 +328,32 @@
                 buttons: {
                     confirm: {
                         className: 'btn btn-danger'
+                    }
+                }
+            });
+        </script>
+    @endif
+
+    @if ($errors->has('archive_title'))
+        <script>
+            swal("Title Already Exists!", "{{ $errors->first('archive_title') }}", {
+                icon: "warning",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-warning'
+                    }
+                }
+            });
+        </script>
+    @endif
+
+    @if ($errors->has('archive_code'))
+        <script>
+            swal("Archive Code Error!", "{{ $errors->first('archive_code') }}", {
+                icon: "warning",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-warning'
                     }
                 }
             });

@@ -7,6 +7,7 @@ use App\Models\Archive;
 use App\Models\Program;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ArchiveAccessRequest;
+use App\Models\ArchiveViewLog;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bookmark;
 class PatronControllerBookmark extends Controller
@@ -29,8 +30,8 @@ public function index(Request $request)
     // Count after filter
     $filteredCount = $query->count();
 
-    // Order by views and latest created
-    $query->orderByDesc('views')->orderByDesc('created_at');
+    // Order by latest created
+    $query->orderByDesc('created_at');
 
     // Paginate
     $archives = $query->paginate(50)->withQueryString();
@@ -43,10 +44,15 @@ public function getArchive($id)
 {  
     $archive = Archive::with(['program'])->findOrFail($id);
 
-    // Increment views
-    $archive->increment('views');
+    // Log the view
+    if (auth()->check()) {
+        ArchiveViewLog::create([
+            'user_id' => auth()->id(),
+            'archive_id' => $id,
+        ]);
+    }
 
-    // ✅ Check if current user has already requested access
+    
     $existingRequest = ArchiveAccessRequest::where('user_id', auth()->id())
         ->where('archive_id', $id)
         ->latest()
@@ -60,7 +66,7 @@ public function getArchive($id)
         'authors'        => $archive->authors ?? null,
         'program'        => $archive->program->name ?? null,
         'year'           => $archive->year ?? null,
-        'views'          => $archive->views,
+        'views'          => $archive->viewLogs()->count(),
         'category'       => $archive->category ?? null,
         'request_status' => $existingRequest?->status, // null if no request
     ]);

@@ -16,7 +16,8 @@ class PatronController extends Controller
 
         $archives = Archive::where('status', 'Publish')
             ->latest()
-            ->paginate(5);
+            ->limit(10)
+            ->get();
 
         // Add this: fetch announcements
         $announcements = Announcement::latest()->get();

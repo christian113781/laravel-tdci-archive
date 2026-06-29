@@ -3,13 +3,13 @@
 @section('pages')
     <div class="page-inner">
         <div class="page-header">
-             <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page">Home</li>
-     <li class="breadcrumb-item active" aria-current="page">Manage</li>
-      <li class="breadcrumb-item active" aria-current="page">Patrons</li>
-  </ol>
-</nav>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage</li>
+                    <li class="breadcrumb-item active" aria-current="page">Patrons</li>
+                </ol>
+            </nav>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -41,7 +41,7 @@
                                                 <div class="col-sm-12 d-flex justify-content-center">
                                                     <div class="input-file input-file-image">
                                                         <img id="view-avatar" class="img-upload-preview" width="100"
-                                                            height="100" src="{{ asset('default.png') }}" alt="preview">
+                                                            height="100" src="{{ asset('assets/img/profile.jpg') }}" alt="preview">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12">
@@ -108,13 +108,8 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                @if ($patron->avatar)
-                                                    <img src="{{ asset('storage/' . $patron->avatar) }}" width="40"
-                                                        height="40" class="rounded-circle">
-                                                @else
-                                                    <img src="" width="40" height="40"
-                                                        class="rounded-circle">
-                                                @endif
+                                                <img src="{{ $patron->avatar ? asset('storage/' . $patron->avatar) : asset('assets/img/profile.jpg') }}"
+                                                    width="40" height="40" class="rounded-circle">
                                             </td>
                                             <td>{{ $patron->first_name }} {{ $patron->last_name }}</td>
                                             <td>{{ $patron->email }}</td>
@@ -133,11 +128,11 @@
 
                                                     @if ($patron->status === 'unverified')
                                                         <form action="{{ route('admin.patron.verify', $patron->id) }}"
-                                                            method="POST" style="display:inline;" class="me-1">
+                                                            method="POST" style="display:inline;" class="me-1 verify-form">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <button type="submit" class="btn btn-sm btn-success"
-                                                                title="Verify">
+                                                            <button type="button" class="btn btn-sm btn-success btn-verify-patron"
+                                                                title="Verify" data-id="{{ $patron->id }}">
                                                                 <i class="fa fa-check"></i>
                                                             </button>
                                                         </form>
@@ -149,7 +144,7 @@
                                                         data-first_name="{{ $patron->first_name }}"
                                                         data-last_name="{{ $patron->last_name }}"
                                                         data-email="{{ $patron->email }}"
-                                                        data-avatar="{{ $patron->avatar ? asset('storage/' . $patron->avatar) : asset('default.png') }}"
+                                                        data-avatar="{{ $patron->avatar ? asset('storage/' . $patron->avatar) :  asset('assets/img/profile.jpg') }}"
                                                         data-status="{{ $patron->status }}">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
@@ -214,6 +209,21 @@
                 }
             });
         });
+
+        $(document).on('click', '.btn-verify-patron', function(e) {
+            e.preventDefault();
+
+            swal({
+                title: "Processing",
+                text: "Please wait while the patron is being verified.",
+                icon: "info",
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+            });
+
+            $(this).closest('form').submit();
+        });
     </script>
 
 
@@ -249,7 +259,7 @@
                 let lastName = $(this).data('last_name');
                 let email = $(this).data('email');
                 let avatar = $(this).data('avatar');
-                let status = $(this).data('status'); 
+                let status = $(this).data('status');
 
                 // fill into modal
                 $('#view-name').val(firstName + ' ' + lastName);

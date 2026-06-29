@@ -12,7 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            app(\App\Services\BackupService::class)->createFullBackup();
+        })->weekly()->days([Schedule::SUNDAY])->at('03:00');
     }
 
     /**

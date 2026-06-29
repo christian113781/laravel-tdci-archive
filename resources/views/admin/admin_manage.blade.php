@@ -6,8 +6,8 @@
 @php
     $hasAvatar = isset($user) && !empty($user->avatar);
     $avatarUrl = $hasAvatar
-        ? asset('storage/' . $user->avatar) // only add 'storage/', not 'avatars/...'
-        : 'https://via.placeholder.com/100';
+        ? asset('storage/' . $user->avatar)
+        : asset('assets/img/profile.jpg');
 @endphp
 
 @extends('admin.admin_dashboard')
@@ -16,27 +16,27 @@
     <div class="page-inner">
 
         <div class="page-header">
-						<h3 class="fw-bold mb-3">DataTables.Net</h3>
-						<ul class="breadcrumbs mb-3">
-							<li class="nav-home">
-								<a href="#">
-									<i class="icon-home"></i>
-								</a>
-							</li>
-							<li class="separator">
-								<i class="icon-arrow-right"></i>
-							</li>
-							<li class="nav-item">
-								<a href="#">Tables</a>
-							</li>
-							<li class="separator">
-								<i class="icon-arrow-right"></i>
-							</li>
-							<li class="nav-item">
-								<a href="#">Datatables</a>
-							</li>
-						</ul>
-					</div>
+            <h3 class="fw-bold mb-3">DataTables.Net</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Tables</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Datatables</a>
+                </li>
+            </ul>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -45,7 +45,7 @@
                         <div class="card-title">Manage User</div>
                     </div>
                     <form method="POST"
-                        action="{{ $user->exists ? route('admin.manage.update', $user->id) : route('admin_manage_store') }}"
+                        action="{{ $user->exists ? route('admin.manage.update', $user->id) : route('admin.manage.store') }}"
                         enctype="multipart/form-data" id="exampleValidation">
                         @csrf
                         @if ($user->exists)

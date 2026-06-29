@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 col-md-4">
+            {{-- <div class="col-sm-6 col-md-4">
                 <div class="card card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
             <div class="col-sm-6 col-md-4">
@@ -142,23 +142,39 @@
                                                     {{ $archive->keywords->pluck('name')->implode(', ') }}</span>
                                             </div>
 
-                                            <div class="mt-3">
-                                                <a href="{{ route('patron.archive.details', $archive->id) }}"
-                                                    class="btn btn-sm btn-primary">View Archive Details</a>
+                                            <div class="mt-3 d-flex align-items-center gap-2 flex-wrap">
+                                                @php
+                                                    $canView = $archive->userCanView(auth()->id());
+                                                @endphp
+
+                                                @if ($canView)
+                                                    <a href="{{ route('patron.archive.details', $archive->id) }}"
+                                                        class="btn btn-sm btn-primary">View Archive Details</a>
+                                                @else
+                                                    <form id="request-access-form-{{ $archive->id }}"
+                                                        action="{{ route('patron.archive.requestAccess', $archive->id) }}"
+                                                        method="POST" style="display: none;">
+                                                        @csrf
+                                                    </form>
+
+                                                    <a href="#"
+                                                        class="btn btn-sm btn-primary btn-view-blocked"
+                                                        data-archive-id="{{ $archive->id }}">
+                                                        <i class="fas fa-envelope me-2"></i> View Archive Details
+                                                    </a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             @empty
-                                {{-- ✅ Show this when no published archives --}}
+
                                 <div class="text-center py-4 text-muted">
                                     <i class="fas fa-archive fa-2x mb-2"></i>
                                     <p>No recent uploads available.</p>
                                 </div>
                             @endforelse
                         </div>
-
-                        {{ $archives->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
             </div>
@@ -205,6 +221,64 @@
                         const url = "{{ url('/patron/announcement') }}/" + id;
                         window.location.href = url;
                     }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.btn-view-blocked').forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const archiveId = this.getAttribute('data-archive-id');
+
+                    swal({
+                        title: "Access Required",
+                        text: "You must request access to verify this archive.",
+                        icon: "info",
+                        buttons: {
+                            cancel: {
+                                text: "Cancel",
+                                visible: true,
+                                className: "btn btn-light"
+                            },
+                            confirm: {
+                                text: "Request Access",
+                                className: "btn btn-secondary"
+                            }
+                        },
+                    }).then((willRequest) => {
+                        if (willRequest) {
+                            const form = document.getElementById('request-access-form-' + archiveId);
+                            const formData = new FormData(form);
+
+                            fetch(form.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                swal({
+                                    title: "Success",
+                                    text: data.message || "Your access request has been submitted successfully.",
+                                    icon: "success",
+                                    button: "OK"
+                                });
+                            })
+                            .catch(() => {
+                                swal({
+                                    title: "Error",
+                                    text: "Unable to submit your request right now.",
+                                    icon: "error",
+                                    button: "OK"
+                                });
+                            });
+                        }
+                    });
                 });
             });
         });

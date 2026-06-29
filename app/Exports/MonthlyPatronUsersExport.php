@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\User;
+use App\Models\UserLoginSession;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -20,32 +21,58 @@ class MonthlyPatronUsersExport implements FromCollection, WithHeadings, WithMapp
 
     public function collection()
     {
-        return User::whereMonth('created_at', $this->month)
+        $users = User::where('role', 'patron')
+            ->whereMonth('created_at', $this->month)
             ->whereYear('created_at', $this->year)
-            ->where('role', 'patron')
+            ->with('loginSessions')
             ->get();
+
+        // Filter login sessions after retrieval for better compatibility
+        $users->each(function ($user) {
+            $user->loginSessions = $user->loginSessions
+                ->filter(function ($session) {
+                    return $session->login_at->month == $this->month 
+                        && $session->login_at->year == $this->year;
+                })
+                ->sortByDesc('login_at')
+                ->values();
+        });
+
+        return $users;
     }
 
     public function headings(): array
     {
         return [
-            'ID',
+            'User ID',
             'First Name',
             'Last Name',
             'Email',
-            'Created At',
-            // other columns if needed
+            'Account Created At',
+            'Total Logins (This Month)',
+            'Last Login (This Month)',
         ];
     }
 
     public function map($user): array
     {
+            // Count logins for this month
+            $loginCount = $user->loginSessions->count();
+        
+        // Get last login for this month
+        $lastLogin = $user->loginSessions->first();
+        $lastLoginDate = $lastLogin ? $lastLogin->login_at->toDateTimeString() : 'No logins';
+
         return [
             $user->id,
             $user->first_name,
             $user->last_name,
             $user->email,
             $user->created_at->toDateTimeString(),
+            $loginCount,
+            $lastLoginDate,
         ];
     }
-}
+    }
+
+
