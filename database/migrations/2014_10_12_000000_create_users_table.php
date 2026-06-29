@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('password');
             $table->enum('role',['admin','staff','patron'])->default('patron');
-            $table->enum('status',['verified','unverified'])->default('unverified');
+            $table->enum('status',['verified','unverified','rejected'])->default('unverified');
             $table->rememberToken();
             $table->timestamps();
         });

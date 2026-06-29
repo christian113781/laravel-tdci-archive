@@ -116,8 +116,18 @@
                                             {{-- <td>{{ ucfirst($patron->gender) }}</td> --}}
                                             <td class="text-center">
                                                 {{-- Display status with badge --}}
+                                                @php
+                                                    $statusClass = 'bg-secondary';
+                                                    if ($patron->status === 'verified') {
+                                                        $statusClass = 'bg-success';
+                                                    } elseif ($patron->status === 'unverified') {
+                                                        $statusClass = 'bg-warning text-dark';
+                                                    } elseif ($patron->status === 'rejected') {
+                                                        $statusClass = 'bg-danger';
+                                                    }
+                                                @endphp
                                                 <span
-                                                    class="badge {{ $patron->status == 'verified' ? 'bg-success' : 'bg-danger' }} px-2 py-1"
+                                                    class="badge {{ $statusClass }} px-2 py-1"
                                                     style="font-size: 1rem;">
                                                     {{ ucfirst($patron->status) }}
                                                 </span>
@@ -134,6 +144,16 @@
                                                             <button type="button" class="btn btn-sm btn-success btn-verify-patron"
                                                                 title="Verify" data-id="{{ $patron->id }}">
                                                                 <i class="fa fa-check"></i>
+                                                            </button>
+                                                        </form>
+
+                                                        <form action="{{ route('admin.patron.reject', $patron->id) }}"
+                                                            method="POST" style="display:inline;" class="me-1 reject-form">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="button" class="btn btn-sm btn-danger btn-reject-patron"
+                                                                title="Reject" data-id="{{ $patron->id }}">
+                                                                <i class="fa fa-times"></i>
                                                             </button>
                                                         </form>
                                                     @endif
@@ -224,12 +244,47 @@
 
             $(this).closest('form').submit();
         });
+
+        $(document).on('click', '.btn-reject-patron', function(e) {
+            e.preventDefault();
+            let form = $(this).closest('form');
+
+            swal({
+                title: "Reject this patron?",
+                text: "The patron will be marked rejected and notified by email.",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        visible: true,
+                        className: "btn btn-secondary"
+                    },
+                    confirm: {
+                        text: "Yes, reject",
+                        className: "btn btn-danger"
+                    }
+                }
+            }).then((willReject) => {
+                if (willReject) {
+                    swal({
+                        title: "Processing",
+                        text: "Please wait while the patron is being rejected.",
+                        icon: "info",
+                        buttons: false,
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                    });
+
+                    form.submit();
+                }
+            });
+        });
     </script>
 
 
-    @if (session('verified_success'))
+    @if (session('status_success'))
         <script>
-            swal("Good job!", "Verified successfully!", {
+            swal("Good job!", "{{ session('status_success') }}", {
                 icon: "success",
                 buttons: {
                     confirm: {
@@ -273,9 +328,9 @@
                 if (status === 'verified') {
                     badge.addClass('bg-success');
                     badge.text('Verified');
-                } else if (status === 'pending') {
+                } else if (status === 'unverified') {
                     badge.addClass('bg-warning text-dark');
-                    badge.text('Pending');
+                    badge.text('Unverified');
                 } else if (status === 'rejected') {
                     badge.addClass('bg-danger');
                     badge.text('Rejected');
@@ -285,7 +340,6 @@
                 }
             });
         });
-    </script>
     </script>
 
 @endpush

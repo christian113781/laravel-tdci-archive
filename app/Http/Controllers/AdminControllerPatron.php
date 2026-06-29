@@ -27,22 +27,33 @@ class AdminControllerPatron extends Controller
     $student = User::findOrFail($id);
     $student->status = 'verified';
     $student->save();
-    
-    // Send verification email
-    Mail::to($student->email)->send(new PatronVerificationEmail($student->name, 'verified'));
-    
-    return redirect()->back()->with('verified_success', 'Patron verified successfully.');
+
+    try {
+        Mail::to($student->email)->send(new PatronVerificationEmail($student->name, 'verified'));
+        return redirect()->back()->with('status_success', 'Patron verified successfully.');
+    } catch (\Exception $e) {
+        Log::error('Patron verification email failed: ' . $e->getMessage());
+        return redirect()->back()->with('status_success', 'Patron verified successfully, but the email could not be sent.');
+    }
     }
 
     public function reject($id) {
     $student = User::findOrFail($id);
     $student->status = 'rejected';
     $student->save();
-    
-    // Send rejection email
-    Mail::to($student->email)->send(new PatronVerificationEmail($student->name, 'rejected'));
-    
-    return redirect()->back()->with('verified_success', 'Patron rejected successfully.');
+
+    try {
+        Log::info('Sending patron rejection email to ' . $student->email);
+        Mail::to($student->email)->send(new PatronVerificationEmail(
+            $student->name,
+            'rejected',
+            'Your account verification request has been rejected. Please contact support for further assistance.'
+        ));
+        return redirect()->back()->with('status_success', 'Patron rejected successfully.');
+    } catch (\Exception $e) {
+        Log::error('Patron rejection email failed: ' . $e->getMessage());
+        return redirect()->back()->with('status_success', 'Patron rejected successfully, but the email could not be sent.');
+    }
     }
 
     public function destroy($id) {

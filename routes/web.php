@@ -81,6 +81,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Patron
     Route::get('/admin/patron', [AdminControllerPatron::class, 'index'])->name('admin.patron');
     Route::patch('/admin/patron/{id}/verify', [AdminControllerPatron::class, 'verify'])->name('admin.patron.verify');
+    Route::patch('/admin/patron/{id}/reject', [AdminControllerPatron::class, 'reject'])->name('admin.patron.reject');
     Route::delete('/admin/patron/{id}', [AdminControllerPatron::class, 'destroy'])->name('admin.patron.destroy');
 
     // Program

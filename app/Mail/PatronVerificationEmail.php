@@ -15,16 +15,16 @@ class PatronVerificationEmail extends Mailable
 
     public $userName;
     public $status;
-    public $message;
+    public $statusMessage;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($userName, $status, $message = null)
+    public function __construct($userName, $status, $statusMessage = null)
     {
         $this->userName = $userName;
         $this->status = $status;
-        $this->message = $message;
+        $this->statusMessage = $statusMessage;
     }
 
     /**
@@ -52,7 +52,7 @@ class PatronVerificationEmail extends Mailable
             with: [
                 'userName' => $this->userName,
                 'status' => $this->status,
-                'message' => $this->message,
+                'statusMessage' => $this->statusMessage,
             ],
         );
     }

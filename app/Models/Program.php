@@ -9,4 +9,9 @@ class Program extends Model
 {
     use HasFactory;
     protected $fillable = ['name'];
+
+    public function archives()
+    {
+        return $this->hasMany(Archive::class);
+    }
 }

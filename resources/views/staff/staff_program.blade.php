@@ -102,7 +102,9 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button" class="btn btn-sm btn-danger btn-delete"
-                                                            data-id="{{ $program->id }}">
+                                                            data-id="{{ $program->id }}"
+                                                            data-program-name="{{ $program->name }}"
+                                                            data-archives-count="{{ $program->archives->count() }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </form>
@@ -174,19 +176,34 @@
             e.preventDefault();
 
             let programId = $(this).data('id');
+            let programName = $(this).data('program-name');
+            let archivesCount = $(this).data('archives-count');
+
+            let message =
+                `This program "${programName}" is assigned to <strong>${archivesCount} archive${archivesCount !== 1 ? 's' : ''}</strong>.`;
+            if (archivesCount > 0) {
+                message += ` Deleting it will affect these archives.`;
+            }
+            message += ` Are you sure you want to delete this program?`;
 
             swal({
-                title: "Are you sure you want to delete this program?",
+                title: "Delete Program?",
+                content: {
+                    element: 'div',
+                    attributes: {
+                        innerHTML: message
+                    }
+                },
                 icon: "warning",
                 buttons: {
                     cancel: {
                         text: "Cancel",
                         visible: true,
-                        className: "btn btn-danger"
+                        className: "btn btn-secondary"
                     },
                     confirm: {
                         text: "Yes, delete!",
-                        className: "btn btn-success"
+                        className: "btn btn-danger"
                     }
                 }
             }).then((willDelete) => {

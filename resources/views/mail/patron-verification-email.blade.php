@@ -26,8 +26,8 @@
                     <i style="color: #dc3545;">✗</i> Account Verification - REJECTED
                 </h3>
                 <p><strong>Your account verification has been rejected.</strong></p>
-                @if ($message)
-                    <p><strong>Reason:</strong> {{ $message }}</p>
+                @if ($statusMessage)
+                    <p><strong>Reason:</strong> {{ $statusMessage }}</p>
                 @else
                     <p>Your account could not be verified at this time. Please contact our support team for more
                         information.</p>
