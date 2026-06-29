@@ -63,13 +63,13 @@
                                                             <i class="fas fa-check"></i>
                                                         </a>
                                                         <a href="{{ route('staff.archive.request.reject', $req->id) }}"
-                                                            class="btn btn-sm btn-danger reject-btn" title="Reject">
+                                                            class="btn btn-sm btn-secondary reject-btn" title="Reject">
                                                             <i class="fas fa-times"></i>
                                                         </a>
                                                     @elseif ($req->status === 'approved')
                                                         {{-- If approved → hide Approve, show only Reject --}}
                                                         <a href="{{ route('staff.archive.request.reject', $req->id) }}"
-                                                            class="btn btn-sm btn-danger reject-btn" title="Reject">
+                                                            class="btn btn-sm btn-secondary reject-btn" title="Reject">
                                                             <i class="fas fa-times"></i>
                                                         </a>
                                                     @elseif ($req->status === 'rejected')
@@ -79,6 +79,17 @@
                                                             <i class="fas fa-check"></i>
                                                         </a>
                                                     @endif
+
+                                                    <form id="delete-form-{{ $req->id }}"
+                                                        action="{{ route('staff.archive.request.destroy', $req->id) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-sm btn-danger delete-request-btn"
+                                                            title="Delete Request">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>
@@ -140,7 +151,7 @@
                     // Show SweetAlert loader
                     swal({
                         title: "Processing...",
-                        text: "Sending approval email...",
+                        text: "Sending rejection email...",
                         buttons: false,
                         closeOnClickOutside: false,
                         closeOnEsc: false,
@@ -151,6 +162,34 @@
                     setTimeout(function() {
                         window.location.href = url;
                     }, 800);
+                });
+            });
+
+            document.querySelectorAll(".delete-request-btn").forEach(function(button) {
+                button.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    let form = this.closest('form');
+
+                    swal({
+                        title: "Delete this request?",
+                        text: "This action will permanently remove the archive request.",
+                        icon: "warning",
+                        buttons: {
+                            cancel: {
+                                text: "Cancel",
+                                visible: true,
+                                className: "btn btn-secondary"
+                            },
+                            confirm: {
+                                text: "Yes, delete",
+                                className: "btn btn-danger"
+                            }
+                        }
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                            form.submit();
+                        }
+                    });
                 });
             });
         });

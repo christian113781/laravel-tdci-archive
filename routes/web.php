@@ -77,6 +77,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/request', [AdminControllerRequest::class, 'index'])->name('admin.archive.request');
     Route::get('/admin/archive-request/{id}/approve', [AdminControllerRequest::class, 'approve'])->name('admin.archive.request.approve');
     Route::get('/admin/archive-request/{id}/reject', [AdminControllerRequest::class, 'reject'])->name('admin.archive.request.reject');
+    Route::delete('/admin/archive-request/{id}', [AdminControllerRequest::class, 'destroy'])->name('admin.archive.request.destroy');
 
     // Patron
     Route::get('/admin/patron', [AdminControllerPatron::class, 'index'])->name('admin.patron');
@@ -183,6 +184,7 @@ Route::middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/staff/request', [StaffControllerRequest::class, 'index'])->name('staff.archive.request');
     Route::get('/staff/archive-request/{id}/approve', [StaffControllerRequest::class, 'approve'])->name('staff.archive.request.approve');
     Route::get('/staff/archive-request/{id}/reject', [StaffControllerRequest::class, 'reject'])->name('staff.archive.request.reject');
+    Route::delete('/staff/archive-request/{id}', [StaffControllerRequest::class, 'destroy'])->name('staff.archive.request.destroy');
 
     // Profile
     Route::get('/staff/profile', [StaffControllerProfile::class, 'index'])->name('staff.profile');

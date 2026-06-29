@@ -79,4 +79,12 @@ class StaffControllerRequest extends Controller
         }
 
     }
+
+    public function destroy($id)
+    {
+        $request = ArchiveAccessRequest::findOrFail($id);
+        $request->delete();
+
+        return redirect()->back()->with('success', 'Archive access request deleted successfully.');
+    }
 }
