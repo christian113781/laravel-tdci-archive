@@ -2,14 +2,18 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use App\Models\User;
 use App\Models\UserLoginSession;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class MonthlyPatronUsersExport implements FromCollection, WithHeadings, WithMapping
+class MonthlyPatronUsersExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $month;
     protected $year;
 
@@ -39,6 +43,11 @@ class MonthlyPatronUsersExport implements FromCollection, WithHeadings, WithMapp
         });
 
         return $users;
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Monthly Patron Users Report';
     }
 
     public function headings(): array

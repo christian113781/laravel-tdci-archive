@@ -2,14 +2,18 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use App\Models\Archive;
 use App\Models\ArchiveViewLog;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ArchiveViewLogsExport implements FromCollection, WithHeadings
+class ArchiveViewLogsExport implements FromCollection, WithHeadings, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $dateFrom;
     protected $dateTo;
     protected $programId;
@@ -68,6 +72,11 @@ class ArchiveViewLogsExport implements FromCollection, WithHeadings
         }
 
         return $formattedData;
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Top Viewed Archives Report';
     }
 
     public function headings(): array

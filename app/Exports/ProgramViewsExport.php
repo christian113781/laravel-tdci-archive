@@ -2,12 +2,16 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ProgramViewsExport implements FromCollection, WithHeadings
+class ProgramViewsExport implements FromCollection, WithHeadings, WithEvents
 {
+    use AddsExcelHeader;
+
     public function collection()
     {
         $results = DB::table('programs')
@@ -25,6 +29,11 @@ class ProgramViewsExport implements FromCollection, WithHeadings
             });
 
         return $results;
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Program Views Report';
     }
 
     public function headings(): array

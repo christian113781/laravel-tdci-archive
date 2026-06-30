@@ -2,15 +2,19 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use App\Models\Archive;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class TopViewsArchiveExport implements FromCollection, WithHeadings, WithMapping
+class TopViewsArchiveExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $dateFrom;
     protected $dateTo;
     protected $programId;
@@ -71,6 +75,11 @@ class TopViewsArchiveExport implements FromCollection, WithHeadings, WithMapping
     /**
      * The headings for the columns in Excel.
      */
+    protected function reportTitle(): string
+    {
+        return 'Top Viewed Archives Report';
+    }
+
     public function headings(): array
     {
         return [

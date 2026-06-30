@@ -2,13 +2,17 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-class MonthlyLoginStatsExport implements FromArray, WithHeadings, WithTitle
+class MonthlyLoginStatsExport implements FromArray, WithHeadings, WithTitle, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $year;
 
     public function __construct(int $year = null)
@@ -50,6 +54,11 @@ class MonthlyLoginStatsExport implements FromArray, WithHeadings, WithTitle
         }
         
         return $data;
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Monthly Login Stats Report';
     }
 
     public function headings(): array

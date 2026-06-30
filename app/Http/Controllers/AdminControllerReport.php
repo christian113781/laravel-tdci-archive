@@ -111,7 +111,7 @@ class AdminControllerReport extends Controller
         // Default year if not passed
         $year = $year ?: now()->year;
 
-        $fileName = "patrons_{$year}_month_{$month}.xlsx";
+        $fileName = "patrons_report_{$year}_month_{$month}.xlsx";
         return Excel::download(new MonthlyPatronUsersExport($month, $year), $fileName);
     }
 
@@ -141,7 +141,7 @@ class AdminControllerReport extends Controller
             abort(400, 'From date must be before or equal to To date');
         }
 
-        $fileName = "patrons_{$dateFrom}_to_{$dateTo}.xlsx";
+        $fileName = "patrons_report_{$dateFrom}_to_{$dateTo}.xlsx";
         return Excel::download(new PatronUsersByDateRangeExport($dateFrom, $dateTo), $fileName);
     }
 
@@ -187,8 +187,8 @@ public function exportArchivesByDateRange(Request $request)
     }
     
     $fileName = $programId 
-        ? "archives_range_{$dateFrom}_to_{$dateTo}_program_{$programId}.xlsx"
-        : "archives_range_{$dateFrom}_to_{$dateTo}.xlsx";
+        ? "publication_inventory_{$dateFrom}_to_{$dateTo}_program_{$programId}.xlsx"
+        : "publication_inventory_{$dateFrom}_to_{$dateTo}.xlsx";
     
     return Excel::download(new ArchivesByDateRangeExport($dateFrom, $dateTo, $programId), $fileName);
 }

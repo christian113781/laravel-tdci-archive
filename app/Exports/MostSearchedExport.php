@@ -2,15 +2,19 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use App\Models\SearchLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class MostSearchedExport implements FromCollection, WithHeadings, WithMapping
+class MostSearchedExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $month;
     protected $year;
     protected $dateFrom;
@@ -49,6 +53,11 @@ class MostSearchedExport implements FromCollection, WithHeadings, WithMapping
         }
 
         return $query->limit(50)->get();
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Most Searched Report';
     }
 
     public function headings(): array

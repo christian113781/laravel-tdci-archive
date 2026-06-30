@@ -2,13 +2,17 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use App\Models\Archive;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ArchivesByYearExport implements FromCollection, WithHeadings, WithMapping
+class ArchivesByYearExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $year;
     protected $programId;
 
@@ -30,6 +34,11 @@ class ArchivesByYearExport implements FromCollection, WithHeadings, WithMapping
         }
         
         return $query->get();
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Archives By Year Report';
     }
 
     public function headings(): array

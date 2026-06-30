@@ -2,13 +2,17 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-class PatronLoginCountExport implements FromArray, WithHeadings, WithTitle
+class PatronLoginCountExport implements FromArray, WithHeadings, WithTitle, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $year;
 
     public function __construct(int $year = null)
@@ -39,6 +43,11 @@ class PatronLoginCountExport implements FromArray, WithHeadings, WithTitle
         }
         
         return $data;
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Patron Login Count Report';
     }
 
     public function headings(): array

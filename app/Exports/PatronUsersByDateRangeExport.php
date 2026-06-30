@@ -2,14 +2,18 @@
 
 namespace App\Exports;
 
+use App\Exports\Traits\AddsExcelHeader;
 use App\Models\User;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class PatronUsersByDateRangeExport implements FromCollection, WithHeadings, WithMapping
+class PatronUsersByDateRangeExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
+    use AddsExcelHeader;
+
     protected $dateFrom;
     protected $dateTo;
 
@@ -42,6 +46,11 @@ class PatronUsersByDateRangeExport implements FromCollection, WithHeadings, With
         })->values();
 
         return $users;
+    }
+
+    protected function reportTitle(): string
+    {
+        return 'Patron Users Report';
     }
 
     public function headings(): array
