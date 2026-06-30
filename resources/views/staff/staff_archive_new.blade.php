@@ -286,8 +286,17 @@
             }
         });
 
-        // Handle form submission to process new keywords
+        // Handle form submission to process new keywords and show processing modal
         $('form').on('submit', function(e) {
+            swal({
+                title: "Processing...",
+                text: "Uploading files. Please wait...",
+                icon: "info",
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+
             var selectedKeywords = $('#multiple').select2('data');
 
             if (selectedKeywords && selectedKeywords.length > 0) {

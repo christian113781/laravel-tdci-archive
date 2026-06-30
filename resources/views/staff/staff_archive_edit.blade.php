@@ -281,6 +281,17 @@
             placeholder: $('#multiple').data('placeholder'),
             allowClear: true
         });
+
+        $('form').on('submit', function(e) {
+            swal({
+                title: "Processing...",
+                text: "Uploading files. Please wait...",
+                icon: "info",
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+        });
     </script>
 
 
