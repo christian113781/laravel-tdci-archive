@@ -54,7 +54,7 @@
                                     </option>
                                     <option value="4" {{ request('field')==4 ? 'selected' : '' }}>Year
                                     </option>
-                                    <option value="6" {{ request('field')==6 ? 'selected' : '' }}>Subject
+                                    <option value="6" {{ request('field')==6 ? 'selected' : '' }}>Abstract
                                     </option>
                                 </select>
                             </div>

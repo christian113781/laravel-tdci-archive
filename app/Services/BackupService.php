@@ -36,11 +36,37 @@ class BackupService
         $this->copyArchiveFiles($tempDir . '/files');
         $this->createZipArchive($tempDir, $backupPath);
         $this->deleteDirectory($tempDir);
+        $this->cleanupOldBackups(3);
 
         return [
             'backup_path' => $backupPath,
             'backup_file_name' => $fileName,
         ];
+    }
+
+    protected function cleanupOldBackups(int $maxBackups = 3): void
+    {
+        if (!is_dir($this->backupDir)) {
+            return;
+        }
+
+        $files = array_filter(scandir($this->backupDir), function ($item) {
+            return is_file($this->backupDir . '/' . $item) && preg_match('/^system-backup-.*\.zip$/', $item);
+        });
+
+        if (count($files) <= $maxBackups) {
+            return;
+        }
+
+        usort($files, function ($a, $b) {
+            return filemtime($this->backupDir . '/' . $a) <=> filemtime($this->backupDir . '/' . $b);
+        });
+
+        $toDelete = array_slice($files, 0, count($files) - $maxBackups);
+
+        foreach ($toDelete as $file) {
+            @unlink($this->backupDir . '/' . $file);
+        }
     }
 
     public function exportDatabaseToSql(string $sqlFile): array

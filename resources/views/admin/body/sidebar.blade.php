@@ -147,6 +147,13 @@ $adminActive = request()->routeIs(['admin.archive', 'admin.archive.manage', 'adm
 
                 <li class="nav-item {{ $adminActiveAnnouncement ? 'active' : '' }}">
                     <a href="{{ route('admin.announcement') }}">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Logs</p>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ $adminActiveAnnouncement ? 'active' : '' }}">
+                    <a href="{{ route('admin.announcement') }}">
                         <i class="fas fa-paper-plane"></i>
                         <p>Announcements</p>
                     </a>

@@ -14,7 +14,15 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             app(\App\Services\BackupService::class)->createFullBackup();
-        })->weekly()->days([Schedule::SUNDAY])->at('03:00');
+        })->dailyAt('17:00');
+
+        $schedule->call(function () {
+            app(\App\Services\BackupService::class)->createFullBackup();
+        })->dailyAt('17:05');
+
+        $schedule->call(function () {
+            app(\App\Services\BackupService::class)->createFullBackup();
+        })->dailyAt('17:10');
     }
 
     /**
