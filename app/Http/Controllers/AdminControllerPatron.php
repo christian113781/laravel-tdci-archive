@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Log as ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +28,12 @@ class AdminControllerPatron extends Controller
     $student = User::findOrFail($id);
     $student->status = 'verified';
     $student->save();
+
+    ActivityLog::create([
+        'user_id' => auth()->id(),
+        'event_type' => 'user_verified',
+        'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " verified user: '{$student->email}'.",
+    ]);
 
     try {
         Mail::to($student->email)->send(new PatronVerificationEmail($student->name, 'verified'));
@@ -58,7 +65,14 @@ class AdminControllerPatron extends Controller
 
     public function destroy($id) {
     $student = User::findOrFail($id);
+    $studentEmail = $student->email;
     $student->delete();
+
+    ActivityLog::create([
+        'user_id' => auth()->id(),
+        'event_type' => 'patron_deleted',
+        'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " deleted patron: '{$studentEmail}'.",
+    ]);
 
     return redirect()->back()->with('destroy_success', 'Patron deleted successfully.');
     } 

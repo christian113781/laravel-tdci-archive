@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Archive;
+use App\Models\ArchiveViewLog;
+use App\Models\Log;
 use App\Models\Program;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ArchiveAccessRequest;
@@ -75,6 +77,13 @@ public function getArchive($id)
         ArchiveViewLog::create([
             'user_id' => auth()->id(),
             'archive_id' => $id,
+        ]);
+
+        Log::create([
+            'user_id' => auth()->id(),
+            'archive_id' => $id,
+            'event_type' => 'archive_view',
+            'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " viewed archive '{$archive->archive_code}'.",
         ]);
     }
 

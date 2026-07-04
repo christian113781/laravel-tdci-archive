@@ -3,7 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminControllerAnnouncement;
 use App\Http\Controllers\AdminControllerArchive;
+use App\Http\Controllers\AdminControllerArchiveManage;
 use App\Http\Controllers\AdminControllerKeyword;
+use App\Http\Controllers\AdminControllerLogs;
 use App\Http\Controllers\AdminControllerManage;
 use App\Http\Controllers\AdminControllerPatron;
 use App\Http\Controllers\AdminControllerProfile;
@@ -23,7 +25,6 @@ use App\Http\Controllers\Shared\ArchiveController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StaffControllerArchive;
 use App\Http\Controllers\StaffControllerArchiveManage;
-use App\Http\Controllers\AdminControllerArchiveManage;
 use App\Http\Controllers\StaffControllerKeyword;
 use App\Http\Controllers\StaffControllerProfile;
 use App\Http\Controllers\StaffControllerProgram;
@@ -113,6 +114,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Reports
     Route::get('/admin/reports', [AdminControllerReport::class, 'index'])->name('admin.report');
+    Route::get('/admin/logs', [AdminControllerLogs::class, 'index'])->name('admin.logs');
     Route::get('/admin/reports/top-views-export', [AdminControllerReport::class, 'exportTop10ByViews'])->name('admin.reports.archives.top_views_export');
     Route::get('/admin/reports/program-views-export', [AdminControllerReport::class, 'exportProgramViewsByProgram'])->name('admin.reports.archives.program_views_export');
     Route::get('/admin/reports/monthly-login-stats-export/{year?}', [AdminControllerReport::class, 'exportMonthlyLoginStats'])->name('admin.reports.monthly_login_stats_export')->where('year', '\d{4}');

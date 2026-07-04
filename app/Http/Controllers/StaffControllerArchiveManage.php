@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Archive;
 use App\Models\Keyword;
+use App\Models\Log;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -205,6 +206,13 @@ if (!file_exists($fullPath)) {
             'figures_file' => $pdfPaths['figures_file'],
         ]);
 
+        Log::create([
+            'user_id' => auth()->id(),
+            'archive_id' => $archive->id,
+            'event_type' => 'archive_upload',
+            'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " uploaded archive '{$archive->archive_code}'.",
+        ]);
+
         // Handle keywords - both existing and new
         $keywordIds = [];
 
@@ -265,10 +273,17 @@ if (!file_exists($fullPath)) {
         $folder = "archives/{$archive->archive_code}";
 
         // Delete the directory and everything inside
-        \Storage::disk('public')->deleteDirectory($folder);
+        Storage::disk('public')->deleteDirectory($folder);
 
         // Then delete the database record
         $archive->delete();
+
+        Log::create([
+            'user_id' => auth()->id(),
+            'archive_id' => $archive->id,
+            'event_type' => 'archive_deleted',
+            'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " deleted archive '{$archive->archive_code}'.",
+        ]);
 
         return redirect()->back()->with('success', 'archive deleted successfully!');
     }
@@ -419,6 +434,13 @@ if (!file_exists($fullPath)) {
 
         // Sync keywords
         $archive->keywords()->sync($request->multiple ?? []);
+
+        Log::create([
+            'user_id' => auth()->id(),
+            'archive_id' => $archive->id,
+            'event_type' => 'archive_updated',
+            'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " updated archive '{$archive->archive_code}'.",
+        ]);
 
         return redirect()
             ->route('staff.archive.manage')

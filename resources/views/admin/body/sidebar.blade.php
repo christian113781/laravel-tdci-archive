@@ -5,6 +5,7 @@ $adminActiveDashboard = request()->routeIs('admin.dashboard');
 $adminActiveKeyword = request()->routeIs(['admin.keyword']);
 $adminActiveReport = request()->routeIs(['admin.report']);
 $adminActiveAnnouncement = request()->routeIs(['admin.announcement']);
+$adminActiveLogs = request()->routeIs(['admin.logs']);
 $adminProfileActive = request()->routeIs(['admin.profile']);
 
 $adminActiveUser = request()->routeIs(['admin.user', 'admin.patron']);
@@ -145,8 +146,8 @@ $adminActive = request()->routeIs(['admin.archive', 'admin.archive.manage', 'adm
                     <h4 class="text-section">Maintenance</h4>
                 </li>
 
-                <li class="nav-item {{ $adminActiveAnnouncement ? 'active' : '' }}">
-                    <a href="{{ route('admin.announcement') }}">
+                <li class="nav-item {{ $adminActiveLogs ? 'active' : '' }}">
+                    <a href="{{ route('admin.logs') }}">
                         <i class="fas fa-info-circle"></i>
                         <p>Logs</p>
                     </a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Log as ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -28,11 +29,18 @@ class AdminControllerUser extends Controller
     $user = User::findOrFail($id);
 
     // Optional: Delete avatar from storage
-    if ($user->avatar && \Storage::disk('public')->exists($user->avatar)) {
-        \Storage::disk('public')->delete($user->avatar);
+    if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+        Storage::disk('public')->delete($user->avatar);
     }
 
+    $userEmail = $user->email;
     $user->delete();
+
+    ActivityLog::create([
+        'user_id' => auth()->id(),
+        'event_type' => 'user_deleted',
+        'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " deleted user: '{$userEmail}'.",
+    ]);
 
     return redirect()
         ->route('admin.user')

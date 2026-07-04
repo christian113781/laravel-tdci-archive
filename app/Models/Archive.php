@@ -131,6 +131,14 @@ public function accessRequests()
     }
 
     /**
+     * Get all unified logs for this archive
+     */
+    public function logs()
+    {
+        return $this->hasMany(Log::class, 'archive_id');
+    }
+
+    /**
      * Get the total number of views for this archive
      * Computed property for compatibility
      */

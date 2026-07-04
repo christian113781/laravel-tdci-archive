@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Log;
 use App\Models\UserLoginSession;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
@@ -44,6 +45,12 @@ class AuthenticatedSessionController extends Controller
         'login_at' => now(),
     ]);
 
+    Log::create([
+        'user_id' => $user->id,
+        'event_type' => 'user_login',
+        'description' => '[' . strtoupper($user->role) . '] ' . $user->email . ' logged in.',
+    ]);
+
     $request->session()->regenerate();
     
         if ($user->role === 'admin') {
@@ -69,6 +76,12 @@ class AuthenticatedSessionController extends Controller
                 ->latest('id')
                 ->first()
                 ?->update(['logout_at' => now()]);
+
+            Log::create([
+                'user_id' => $user->id,
+                'event_type' => 'user_logout',
+                'description' => '[' . strtoupper($user->role) . '] ' . $user->email . ' logged out.',
+            ]);
         }
 
         Auth::guard('web')->logout();

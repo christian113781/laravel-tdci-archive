@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Log;
+use App\Models\Bookmark;
+use App\Models\UserLoginSession;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,6 +48,11 @@ class User extends Authenticatable
     public function loginSessions(): HasMany
     {
         return $this->hasMany(UserLoginSession::class, 'user_id');
+    }
+
+    public function logs(): HasMany
+    {
+        return $this->hasMany(Log::class, 'user_id');
     }
 
     

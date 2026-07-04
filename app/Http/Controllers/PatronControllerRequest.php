@@ -4,6 +4,7 @@ use App\Models\ArchiveAccessRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Archive;
+use App\Models\ArchiveViewLog;
 use App\Models\Program;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Bookmark;
@@ -25,13 +26,14 @@ class PatronControllerRequest extends Controller
         ->whereHas('accessRequests', function ($q) use ($userId) {
             $q->where('user_id', $userId);
         })
-        ->where('status', 'Publish');
+        ->where('status', 'Publish')
+        ->withCount('viewLogs');
 
     $totalArchives = Archive::where('status', 'Publish')->count();
     $filteredCount = $query->count();
 
     $archives = $query
-        ->orderByDesc('views')
+        ->orderByDesc('view_logs_count')
         ->orderByDesc('created_at')
         ->paginate(50)
         ->withQueryString();
@@ -44,10 +46,11 @@ public function getArchive($id)
 {  
     $archive = Archive::with(['program'])->findOrFail($id);
 
-    // Increment views
-    $archive->increment('views');
+    ArchiveViewLog::create([
+        'user_id' => auth()->id(),
+        'archive_id' => $archive->id,
+    ]);
 
-    
     $existingRequest = ArchiveAccessRequest::where('user_id', auth()->id())
         ->where('archive_id', $id)
         ->latest()

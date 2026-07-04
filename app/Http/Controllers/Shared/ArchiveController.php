@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Archive;
 use App\Models\ArchiveAccessRequest;
 use App\Models\ArchiveViewLog;
+use App\Models\Log;
 use App\Models\SearchLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -123,6 +124,17 @@ class ArchiveController extends Controller
                         });
                 });
             }
+
+            if (auth()->check() && auth()->user()->role === 'patron') {
+                Log::create([
+                    'user_id' => auth()->id(),
+                    'event_type' => 'archive_search',
+                    'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " searched for '{$search}'.",
+                    'search_term' => $search,
+                    'field' => (!empty($field) && isset($fieldNames[$field])) ? $fieldNames[$field] : 'Any field',
+                    'results_count' => $query->count(),
+                ]);
+            }
         }
 
         $filteredCount = $query->count();
@@ -143,6 +155,13 @@ class ArchiveController extends Controller
             ArchiveViewLog::create([
                 'user_id' => auth()->id(),
                 'archive_id' => $archive->id,
+            ]);
+
+            Log::create([
+                'user_id' => auth()->id(),
+                'archive_id' => $archive->id,
+                'event_type' => 'archive_view',
+                'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " viewed archive '{$archive->archive_code}'.",
             ]);
         }
         $basePath = 'public/archives/'.$archive->archive_code.'/';

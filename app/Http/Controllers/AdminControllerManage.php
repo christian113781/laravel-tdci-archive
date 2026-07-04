@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Log as ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -68,7 +69,7 @@ class AdminControllerManage extends Controller
             $imagePath = $file->storeAs('uploads/users', $filename, 'public');
         }
 
-        User::create([
+        $createdUser = User::create([
             'first_name' => $validated['firstname'],
             'last_name'  => $validated['lastname'],
             'email'      => $validated['email'],
@@ -76,6 +77,12 @@ class AdminControllerManage extends Controller
             'password'   => Hash::make($validated['password']),
             'role'       => strtolower($validated['usertype']),
             'status'     => 'verified',
+        ]);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'event_type' => 'user_created',
+            'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " created a new user: '{$createdUser->email}'.",
         ]);
 
         DB::commit();
@@ -138,6 +145,12 @@ class AdminControllerManage extends Controller
     }
 
     $user->save();
+
+    ActivityLog::create([
+        'user_id' => auth()->id(),
+        'event_type' => 'user_updated',
+        'description' => '[' . strtoupper(auth()->user()->role) . '] ' . auth()->user()->email . " updated user: '{$user->email}'.",
+    ]);
 
     return redirect()
         ->route('admin.user')
